@@ -13,6 +13,14 @@ class Loader(ABC):
     Base class for all document loaders.
     """
 
+    @classmethod
+    @abstractmethod
+    def supports(cls, source: SourceDocument) -> bool:
+        """
+        Returns True if this loader can process the source document.
+        """
+        raise NotImplementedError
+
     @abstractmethod
     def load(self, source: SourceDocument) -> Document:
         """

@@ -11,10 +11,7 @@ from ragkit.models.source_document import SourceDocument
 '''
 class LoaderFactory:
     # A dictionary/list that stores supported file types.
-    _LOADERS = {
-        ".txt": TextLoader,
-        ".md": TextLoader,
-    }
+    _LOADERS = (TextLoader,)
 
     # @classmethod : Makes this a class(get_loader) method. You can call it without creating an object.
     # It's like static Class and Method in java.
@@ -23,14 +20,9 @@ class LoaderFactory:
         cls, #cls is just like self but only for class methods.
         source: SourceDocument,
     ) -> Loader:
-
-        extension = Path(source.uri).suffix.lower()
-
-        loader = cls._LOADERS.get(extension)
-
-        if loader is None:
-            raise ValueError(
-                f"No loader registered for '{extension}'"
-            )
-
-        return loader()
+        for loader in cls._LOADERS:
+            if loader.supports(source):
+                return loader()
+        raise ValueError(
+            f"No loader found for '{source.uri}'"
+        )
