@@ -5,6 +5,7 @@
 __pycache__/
 *.py[cod]
 *.so
+.python-version
 
 # IDE
 .vscode/
