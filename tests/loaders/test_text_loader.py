@@ -1,4 +1,3 @@
-from pathlib import Path
 
 from ragkit.loaders.text_loader import TextLoader
 from ragkit.models.source_document import SourceDocument
