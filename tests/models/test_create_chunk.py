@@ -8,7 +8,9 @@ def test_create_chunk() -> None:
         id=uuid4(),
         document_id=uuid4(),
         index=0,
-        content="Apache Spark"
+        start_offset=1,
+        end_offset=10,
+        content="Apache Spark",
     )
 
     assert chunk.index == 0

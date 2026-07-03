@@ -34,4 +34,6 @@ class Chunk:
     document_id: UUID
     index: int
     content: str
+    start_offset: int
+    end_offset: int
     metadata: dict[str, Any] = field(default_factory=dict)

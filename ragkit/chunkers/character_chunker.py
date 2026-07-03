@@ -1,29 +1,19 @@
 """
 Purpose
 -------
-Splits a document into overlapping character-based chunks.
+Splits a document into fixed-size overlapping character chunks.
 
 Responsibilities
 ----------------
-- Split a document into chunks.
-- Preserve chunk order.
+- Split document into chunks.
 - Apply overlap.
+- Preserve ordering.
 
 Does NOT
 --------
+- Understand sentences.
+- Understand paragraphs.
 - Generate embeddings.
-- Store chunks.
-- Retrieve chunks.
-
-Notes
------
-This is Version 1.
-
-Future versions will support:
-- Sentence chunking
-- Paragraph chunking
-- Token-aware chunking
-- Recursive chunking
 """
 
 from __future__ import annotations
@@ -36,7 +26,7 @@ from ragkit.models.chunk import Chunk
 from ragkit.models.document import Document
 
 
-class RecursiveChunker(Chunker):
+class CharacterChunker(Chunker):
 
     def __init__(
         self,
@@ -61,28 +51,33 @@ class RecursiveChunker(Chunker):
         self,
         document: Document,
     ) -> Iterable[Chunk]:
-        '''
-         content will have all document data as string in it.
-        '''
+        """
+        content will have all document data as string in it.
+        """
         content = document.content
 
         start = 0
         index = 0
 
         while start < len(content):
-            end = start + self._chunk_size
-            chunk_text = content[start:end] # Here we are just doing string split.
-            yield Chunk(    # yield = we use for Streaming.
+
+            end = min(
+                start + self._chunk_size,
+                len(content),
+            )
+
+            yield Chunk( # yield = we use for Streaming.
                 id=uuid4(),
                 document_id=document.id,
                 index=index,
-                content=chunk_text,
-                metadata=document.metadata.copy(),
+                start_offset=start,
+                end_offset=end,
+                content=content[start:end],# Here we are just doing string split.
             )
-
-            index += 1
 
             start += (
                 self._chunk_size
                 - self._chunk_overlap
             )
+
+            index += 1
