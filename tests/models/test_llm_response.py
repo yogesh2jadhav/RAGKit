@@ -7,10 +7,10 @@ def test_create_llm_response():
     """
 
     response = LLMResponse(
-        text="Apache Spark is a distributed computing engine.",
+        content="Apache Spark is a distributed computing engine.",
     )
 
     assert (
-        response.text
+        response.content
         == "Apache Spark is a distributed computing engine."
     )
