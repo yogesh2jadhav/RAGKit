@@ -38,11 +38,11 @@ class ChromaVectorStore(VectorStore):
     # Using constants prevents accidental typos and keeps
     # the storage and retrieval logic synchronized.
     #
-    _MODEL = "model"
-    _DOCUMENT_ID = "document_id"
-    _CHUNK_INDEX = "chunk_index"
-    _START_OFFSET = "start_offset"
-    _END_OFFSET = "end_offset"
+    _MODEL = "_ragkit_model"
+    _DOCUMENT_ID = "_ragkit_document_id"
+    _CHUNK_INDEX = "_ragkit_chunk_index"
+    _START_OFFSET = "_ragkit_start_offset"
+    _END_OFFSET = "_ragkit_end_offset"
     
     def __init__(
         self,
@@ -151,15 +151,10 @@ class ChromaVectorStore(VectorStore):
         # Everything remaining belongs to the original chunk.
         #
         custom_metadata = dict(metadata)
-
         custom_metadata.pop(self._MODEL, None)
-
         document_id = UUID(custom_metadata.pop(self._DOCUMENT_ID))
-
         index = custom_metadata.pop(self._CHUNK_INDEX)
-
         start_offset = custom_metadata.pop(self._START_OFFSET)
-
         end_offset = custom_metadata.pop(self._END_OFFSET)
 
         return Chunk(
