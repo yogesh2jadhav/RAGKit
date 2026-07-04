@@ -1,46 +1,53 @@
 """
 Purpose
 -------
-Defines the contract for retrieving relevant chunks.
+Defines the contract for retrieving relevant content.
 
 Responsibilities
 ----------------
-- Accept a user question.
-- Return relevant chunks.
+- Accept a search query.
+- Return ranked search results.
 
 Does NOT
 --------
+- Generate embeddings.
+- Perform vector search directly.
 - Generate LLM responses.
-- Store vectors.
 """
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
 
-from ragkit.models.chunk import Chunk
+from ragkit.models.search_result import SearchResult
 
-# This is an interface some class have to implement this.
+# This is just like interface
 class Retriever(ABC):
+    """
+    Abstract base class for all retrieval strategies.
+    """
 
     @abstractmethod
     def retrieve(
         self,
-        question: str,
+        query: str,
         top_k: int = 5,
-    ) -> list[Chunk]:
+    ) -> Iterable[SearchResult]:
         """
-        Retrieve the most relevant chunks.
-        """
-        raise NotImplementedError
+        Retrieve the most relevant search results.
 
-    @abstractmethod
-    def search(
-        self,
-        query_vector: list[float],
-        top_k: int = 5,
-    ) -> list[Chunk]:
-        """
-        Perform similarity search.
+        Parameters
+        ----------
+        query
+            User supplied search query.
+
+        top_k
+            Maximum number of results to retrieve.
+
+        Returns
+        -------
+        Iterable[SearchResult]
+            Search results ordered by relevance.
         """
         raise NotImplementedError
