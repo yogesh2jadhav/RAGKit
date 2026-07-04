@@ -76,7 +76,6 @@ class OllamaEmbedder(Embedder):
 
             yield Embedding(
                 chunk_id=chunk.id,
-                content=chunk.content,
                 model=self._model,
                 vector=vector,
             )

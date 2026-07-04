@@ -69,7 +69,6 @@ class SentenceTransformerEmbedder(Embedder):
         ):
             yield Embedding(
                 chunk_id=chunk.id,
-                content=chunk.content,
                 model=self._model_name,
                 vector=vector.tolist(),
             )

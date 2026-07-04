@@ -7,7 +7,6 @@ def test_create_embedding():
 
     embedding = Embedding(
         chunk_id=uuid4(),
-        content="test-content",
         model="test-model",
         vector=[0.1, 0.2, 0.3],
     )

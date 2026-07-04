@@ -32,7 +32,6 @@ def test_store_embedding(tmp_path):
     embedding = Embedding(
         chunk_id=chunk.id,
         model="nomic-embed-text",
-        content="This field is currently unused.",
         vector=[0.1, 0.2, 0.3],
     )
 
@@ -69,7 +68,6 @@ def test_chunk_embedding_id_mismatch(tmp_path):
     embedding = Embedding(
         chunk_id=uuid4(),  # Different UUID
         model="nomic-embed-text",
-        content="Invalid",
         vector=[0.1, 0.2],
     )
 
