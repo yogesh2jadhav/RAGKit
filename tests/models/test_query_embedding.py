@@ -64,4 +64,4 @@ def test_query_embedding_repr():
 
     representation = repr(embedding)
 
-    assert "QueryEmbedding" in representation 
+    assert "QueryEmbedding" in representation

@@ -17,7 +17,9 @@ Does NOT
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+
+from collections.abc import Iterable, Mapping
+from typing import Any
 
 import chromadb
 
@@ -27,6 +29,8 @@ from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 from uuid import UUID
+
+
 class ChromaVectorStore(VectorStore):
     """
     ChromaDB implementation of VectorStore.
@@ -120,6 +124,8 @@ class ChromaVectorStore(VectorStore):
         - Generate embeddings.
         - Rank or rerank results.
         """
+        if top_k <= 0:
+            raise ValueError("top_k must be greater than zero.")
 
         response = self._collection.query(
             query_embeddings=[query_embedding.vector],
@@ -135,10 +141,20 @@ class ChromaVectorStore(VectorStore):
         # Chroma returns nested lists because it supports
         # querying multiple vectors in a single request.
         #
+        #
+        # Chroma always returns one list of results for each
+        # supplied query embedding. Since we query using a
+        # single embedding, extract the first result set.
+        #
         ids = response["ids"][0]
         documents = response["documents"][0]
         metadatas = response["metadatas"][0]
         distances = response["distances"][0]
+
+        #
+        # All returned collections must have the same size.
+        #
+        assert len(ids) == len(documents) == len(metadatas) == len(distances)
 
         for chunk_id, document, metadata, distance in zip(
             ids,
@@ -163,7 +179,7 @@ class ChromaVectorStore(VectorStore):
         *,
         chunk_id: str,
         document: str,
-        metadata: dict,
+        metadata: Mapping[str, Any],
     ) -> Chunk:
         """
         Reconstruct a Chunk from data stored in Chroma.
