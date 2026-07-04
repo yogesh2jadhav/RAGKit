@@ -1,17 +1,19 @@
 """
 Purpose
 -------
-Demonstrates the complete embedding pipeline.
+Demonstrates embedding generation using Ollama.
 
 Pipeline
 --------
-Local Folder
+LocalSource
     ↓
-Document Loader
+Loader
     ↓
-Character Chunker
+Document
     ↓
-Ollama Embedder
+CharacterChunker
+    ↓
+OllamaEmbedder
 """
 
 from ragkit.chunkers.character_chunker import CharacterChunker
@@ -22,9 +24,7 @@ from ragkit.sources.local_source import LocalSource
 
 def main() -> None:
 
-    source = LocalSource("docs") # This will load all file list from directory.
-
-    factory = LoaderFactory()
+    source = LocalSource("docs")
 
     chunker = CharacterChunker(
         chunk_size=100,
@@ -33,22 +33,45 @@ def main() -> None:
 
     embedder = OllamaEmbedder()
 
-    for source_document in source.discover():  # source.discover() is list and source_document will hold one file at time.
+    for source_document in source.discover():
 
-        loader = factory.get_loader(source_document)
-        document = loader.load(source_document)
-        chunks = chunker.chunk(document)
-        embeddings = embedder.embed(chunks)
+        loader = LoaderFactory.get_loader(
+            source_document
+        )
+
+        document = loader.load(
+            source_document
+        )
+
+        chunks = chunker.chunk(
+            document
+        )
+
         print("=" * 80)
         print(document.metadata["filename"])
         print("=" * 80)
 
-        for embedding in embeddings:
+        for embedding in embedder.embed(
+            chunks
+        ):
 
             print(
-                f"Vector Length : {len(embedding.vector)}"
+                f"Chunk : {embedding.chunk_id}"
             )
 
+            print(
+                f"Model : {embedding.model}"
+            )
+
+            print(
+                f"Vector Dimension : {len(embedding.vector)}"
+            )
+
+            print()
+
+            #
+            # Show only first embedding
+            #
             break
 
 
