@@ -22,6 +22,8 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import Any
 
+from ragkit.models.llm_response import LLMResponse
+
 
 class LLM(ABC):
     """
@@ -33,7 +35,7 @@ class LLM(ABC):
         self,
         prompt: str,
         options: Mapping[str, Any] | None = None,
-    ) -> str:
+    ) -> LLMResponse:
         """
         Generate a response for the supplied prompt.
 
