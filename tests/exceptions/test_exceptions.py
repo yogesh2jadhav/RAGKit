@@ -2,6 +2,7 @@ from ragkit.exceptions import (
     EmbeddingError,
     LLMError,
     RagKitError,
+    ServiceError,
     VectorStoreError,
 )
 
@@ -48,3 +49,14 @@ def test_raise_vector_store_error():
         raise VectorStoreError("vector store failed")
     except RagKitError as ex:
         assert str(ex) == "vector store failed"
+
+def test_service_error_hierarchy():
+    """
+    Verify all service errors inherit from ServiceError.
+    """
+
+    assert issubclass(EmbeddingError, ServiceError)
+    assert issubclass(LLMError, ServiceError)
+    assert issubclass(VectorStoreError, ServiceError)
+
+    assert issubclass(ServiceError, RagKitError)

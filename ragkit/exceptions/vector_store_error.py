@@ -4,10 +4,10 @@ Purpose
 Represents vector store failures.
 """
 
-from ragkit.exceptions.ragkit_error import RagKitError
+from ragkit.exceptions.service_error import ServiceError
 
 
-class VectorStoreError(RagKitError):
+class VectorStoreError(ServiceError):
     """
     Raised when vector store operations fail.
     """

@@ -4,10 +4,10 @@ Purpose
 Represents embedding generation failures.
 """
 
-from ragkit.exceptions.ragkit_error import RagKitError
+from ragkit.exceptions.service_error import ServiceError
 
 
-class EmbeddingError(RagKitError):
+class EmbeddingError(ServiceError):
     """
     Raised when embedding generation fails.
     """
