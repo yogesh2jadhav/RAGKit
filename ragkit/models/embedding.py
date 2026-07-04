@@ -27,5 +27,6 @@ from uuid import UUID
 @dataclass(frozen=True, slots=True)
 class Embedding:
     chunk_id: UUID
+    content: str
     model: str
     vector: list[float]
