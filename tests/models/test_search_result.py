@@ -7,7 +7,7 @@ from ragkit.models.search_result import SearchResult
 def test_create_search_result():
     """
     Verify that SearchResult stores
-    the retrieved Chunk and similarity score.
+    both the retrieved Chunk and score.
     """
 
     chunk = Chunk(
@@ -24,8 +24,8 @@ def test_create_search_result():
 
     result = SearchResult(
         chunk=chunk,
-        similarity=0.987,
+        score=0.123,
     )
 
     assert result.chunk == chunk
-    assert result.similarity == 0.987
+    assert result.score == 0.123

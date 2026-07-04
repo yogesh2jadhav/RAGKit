@@ -6,7 +6,7 @@ Represents the result returned by a vector similarity search.
 Responsibilities
 ----------------
 - Hold the retrieved Chunk.
-- Hold the similarity score for that Chunk.
+- Hold the retrieval score returned by the vector store.
 
 Does NOT
 --------
@@ -21,7 +21,7 @@ from dataclasses import dataclass
 
 from ragkit.models.chunk import Chunk
 
-# This is just like DTO in java
+
 @dataclass(frozen=True, slots=True)
 class SearchResult:
     """
@@ -32,12 +32,19 @@ class SearchResult:
     chunk
         The retrieved chunk.
 
-    similarity
-        Similarity score between the query embedding
-        and the stored chunk embedding.
+    score
+        Retrieval score returned by the underlying vector store.
 
-        Higher values indicate better matches.
-    """
+        The interpretation depends on the vector database
+        and similarity metric being used.
+
+        Examples
+        --------
+        - Cosine distance
+        - Cosine similarity
+        - Dot product
+        - Euclidean distance
+        """
 
     chunk: Chunk
-    similarity: float
+    score: float
