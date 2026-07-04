@@ -264,3 +264,43 @@ or, if using Ruff:
 pip install ruff
 ruff check .
 ```
+---
+---
+
+# RAGKit Architecture - Over View
+
+## Core Models
+
+* Document
+* Chunk
+* Embedding
+* QueryEmbedding
+* SearchResult
+* LLMResponse
+
+---
+
+## Interfaces
+
+* Loader
+* Chunker
+* Embedder
+* VectorStore
+* Retriever
+* PromptBuilder
+* LLM
+* Pipeline
+
+---
+
+## Concrete Implementations
+
+* TextLoader
+* CharacterChunker
+* OllamaEmbedder
+* SentenceTransformerEmbedder
+* ChromaVectorStore
+* SimilarityRetriever
+* DefaultPromptBuilder
+* OllamaLLM
+* RetrievalPipeline
