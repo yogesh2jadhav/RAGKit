@@ -105,24 +105,59 @@ class ChromaVectorStore(VectorStore):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
-    ) -> list[SearchResult]:
+    ) -> Iterable[SearchResult]:
         """
-        Search for the most similar chunks.
+        Search for chunks similar to the supplied query.
 
         Responsibilities
         ----------------
-        - This is currently a placeholder implementation.
-        - It exists so the project remains buildable while the
-          retrieval feature is being developed.
+        - Execute a similarity search in ChromaDB.
+        - Reconstruct Chunk objects.
+        - Yield SearchResult objects.
 
         Does NOT
         --------
-        - Perform an actual similarity search.
+        - Generate embeddings.
+        - Rank or rerank results.
         """
 
-        raise NotImplementedError(
-            "ChromaVectorStore.search() has not been implemented yet."
+        response = self._collection.query(
+            query_embeddings=[query_embedding.vector],
+            n_results=top_k,
+            include=[
+                "documents",
+                "metadatas",
+                "distances",
+            ],
         )
+
+        #
+        # Chroma returns nested lists because it supports
+        # querying multiple vectors in a single request.
+        #
+        ids = response["ids"][0]
+        documents = response["documents"][0]
+        metadatas = response["metadatas"][0]
+        distances = response["distances"][0]
+
+        for chunk_id, document, metadata, distance in zip(
+            ids,
+            documents,
+            metadatas,
+            distances,
+            strict=True,
+        ):
+            chunk = self._build_chunk(
+                chunk_id=chunk_id,
+                document=document,
+                metadata=metadata,
+            )
+
+            yield SearchResult(
+                chunk=chunk,
+                score=distance,
+            )
+
     def _build_chunk(
         self,
         *,

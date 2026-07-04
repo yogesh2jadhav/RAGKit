@@ -29,8 +29,6 @@ class QueryEmbedding:
 
     Attributes
     ----------
-    content:
-        Original query text.
 
     model:
         Embedding model used to generate the vector.
@@ -38,7 +36,5 @@ class QueryEmbedding:
     vector:
         Numerical embedding vector.
     """
-
-    content: str
     model: str
     vector: list[float]

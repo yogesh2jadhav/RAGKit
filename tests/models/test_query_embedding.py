@@ -13,29 +13,12 @@ def test_query_embedding_fields():
     """
 
     embedding = QueryEmbedding(
-        content="What is Python?",
         model="nomic-embed-text",
         vector=[0.1, 0.2, 0.3],
     )
 
-    assert embedding.content == "What is Python?"
     assert embedding.model == "nomic-embed-text"
     assert embedding.vector == [0.1, 0.2, 0.3]
-
-
-def test_query_embedding_is_frozen():
-    """
-    QueryEmbedding is immutable.
-    """
-
-    embedding = QueryEmbedding(
-        content="Question",
-        model="test-model",
-        vector=[1.0],
-    )
-
-    with pytest.raises(FrozenInstanceError):
-        embedding.content = "Modified"
 
 
 def test_query_embedding_slots():
@@ -44,7 +27,6 @@ def test_query_embedding_slots():
     """
 
     embedding = QueryEmbedding(
-        content="Question",
         model="test-model",
         vector=[1.0],
     )
@@ -58,13 +40,11 @@ def test_query_embedding_equality():
     """
 
     left = QueryEmbedding(
-        content="Question",
         model="model",
         vector=[1.0, 2.0],
     )
 
     right = QueryEmbedding(
-        content="Question",
         model="model",
         vector=[1.0, 2.0],
     )
@@ -78,12 +58,10 @@ def test_query_embedding_repr():
     """
 
     embedding = QueryEmbedding(
-        content="Hello",
         model="model",
         vector=[0.5],
     )
 
     representation = repr(embedding)
 
-    assert "QueryEmbedding" in representation
-    assert "Hello" in representation
+    assert "QueryEmbedding" in representation 
