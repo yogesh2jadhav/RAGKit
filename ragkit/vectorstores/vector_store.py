@@ -6,7 +6,7 @@ Defines the abstract interface for all vector store implementations.
 Responsibilities
 ----------------
 - Store chunk embeddings.
-- Persist enough metadata to faithfully reconstruct a Chunk.
+- Search for similar chunks.
 
 Does NOT
 ---------
@@ -22,14 +22,13 @@ from collections.abc import Iterable
 
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
+from ragkit.models.query_embedding import QueryEmbedding
+from ragkit.models.search_result import SearchResult
 
-
+# This is like interface in java
 class VectorStore(ABC):
     """
-    Abstract base class for vector stores.
-
-    A VectorStore persists vectors together with enough information
-    to rebuild the original Chunk during retrieval.
+    Abstract base class for all vector stores.
     """
 
     @abstractmethod
@@ -39,19 +38,30 @@ class VectorStore(ABC):
         embeddings: Iterable[Embedding],
     ) -> None:
         """
-        Store chunks and their embeddings.
+        Store chunks together with their embeddings.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def search(
+        self,
+        query_embedding: QueryEmbedding,
+        top_k: int = 5,
+    ) -> list[SearchResult]:
+        """
+        Search the vector store.
 
         Parameters
         ----------
-        chunks
-            Original chunks.
+        query_embedding
+            Embedding generated from the user's question.
 
-        embeddings
-            Vector representations of the chunks.
+        top_k
+            Maximum number of similar chunks to return.
 
-        Notes
-        -----
-        Both iterables must represent the same logical ordering.
-        Each Embedding.chunk_id must match the corresponding Chunk.id.
+        Returns
+        -------
+        list[SearchResult]
+            Search results ordered by descending similarity.
         """
         raise NotImplementedError

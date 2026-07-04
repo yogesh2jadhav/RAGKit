@@ -5,7 +5,8 @@ import pytest
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
-
+from ragkit.models.query_embedding import QueryEmbedding
+from ragkit.models.search_result import SearchResult
 
 def test_store_embedding(tmp_path):
     """
@@ -129,3 +130,25 @@ def test_store_embeddings_in_any_order(tmp_path):
     )
 
     assert store.count() == 2
+    def search(
+        self,
+        query_embedding: QueryEmbedding,
+        top_k: int = 5,
+    ) -> list[SearchResult]:
+        """
+        Search for the most similar chunks.
+
+        Responsibilities
+        ----------------
+        - This is currently a placeholder implementation.
+        - It exists so the project remains buildable while the
+          retrieval feature is being developed.
+
+        Does NOT
+        --------
+        - Perform an actual similarity search.
+        """
+
+        raise NotImplementedError(
+            "ChromaVectorStore.search() has not been implemented yet."
+        )

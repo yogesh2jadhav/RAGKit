@@ -24,7 +24,8 @@ import chromadb
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.vectorstores.vector_store import VectorStore
-
+from ragkit.models.query_embedding import QueryEmbedding
+from ragkit.models.search_result import SearchResult
 
 class ChromaVectorStore(VectorStore):
     """
@@ -87,3 +88,26 @@ class ChromaVectorStore(VectorStore):
         Returns the number of stored vectors.
         """
         return self._collection.count()
+
+    def search(
+        self,
+        query_embedding: QueryEmbedding,
+        top_k: int = 5,
+    ) -> list[SearchResult]:
+        """
+        Search for the most similar chunks.
+
+        Responsibilities
+        ----------------
+        - This is currently a placeholder implementation.
+        - It exists so the project remains buildable while the
+          retrieval feature is being developed.
+
+        Does NOT
+        --------
+        - Perform an actual similarity search.
+        """
+
+        raise NotImplementedError(
+            "ChromaVectorStore.search() has not been implemented yet."
+        )
