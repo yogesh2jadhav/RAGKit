@@ -27,7 +27,7 @@ class Pipeline(ABC):
     """
 
     @abstractmethod
-    def run(
+    def invoke(
         self,
         query: str,
     ) -> LLMResponse:
