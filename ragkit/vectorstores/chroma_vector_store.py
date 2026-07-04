@@ -58,30 +58,14 @@ class ChromaVectorStore(VectorStore):
         The Chunk remains the source of truth for all metadata.
         """
 
-        #
-        # Iterate over both collections together.
-        #
-        # zip(..., strict=True) ensures:
-        #
-        #   1. Same number of chunks and embeddings.
-        #   2. Raises ValueError if they differ.
-        #
-        for chunk, embedding in zip(chunks, embeddings, strict=True):
+        embedding_by_chunk_id = {embedding.chunk_id: embedding for embedding in embeddings}
 
-            #
-            # Defensive validation.
-            #
-            # This catches programming mistakes immediately instead of
-            # silently corrupting the vector database.
-            #
-            if chunk.id != embedding.chunk_id:
-                raise ValueError(
-                    "Chunk.id does not match Embedding.chunk_id."
-                )
+        for chunk in chunks:
+            embedding = embedding_by_chunk_id.get(chunk.id)
 
-            #
-            # Store complete metadata.
-            #
+            if embedding is None:
+                raise ValueError(f"No embedding found for chunk {chunk.id}.")
+
             metadata = {
                 "model": embedding.model,
                 "document_id": str(chunk.document_id),
