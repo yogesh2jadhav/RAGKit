@@ -30,4 +30,4 @@ class LLMResponse:
         Generated response text.
     """
 
-    text: str
+    content: str
