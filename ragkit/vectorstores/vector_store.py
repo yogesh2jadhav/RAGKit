@@ -5,8 +5,8 @@ Defines the abstract interface for all vector store implementations.
 
 Responsibilities
 ----------------
-- Store chunk embeddings.
-- Search for similar chunks.
+- Persist chunk embeddings.
+- Retrieve similar chunks for a query.
 
 Does NOT
 ---------
@@ -25,10 +25,20 @@ from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 
-# This is like interface in java
+
 class VectorStore(ABC):
     """
     Abstract base class for all vector stores.
+
+    Every implementation is responsible for:
+
+    - Persisting embeddings.
+    - Retrieving similar chunks.
+
+    The interface intentionally exposes Iterables instead
+    of concrete collections. This keeps the API compatible
+    with both eager (list-based) and streaming
+    implementations.
     """
 
     @abstractmethod
@@ -38,7 +48,21 @@ class VectorStore(ABC):
         embeddings: Iterable[Embedding],
     ) -> None:
         """
-        Store chunks together with their embeddings.
+        Persist chunks together with their embeddings.
+
+        Parameters
+        ----------
+        chunks
+            Original chunks produced by the Chunker.
+
+        embeddings
+            Embeddings corresponding to the supplied chunks.
+
+        Notes
+        -----
+        Every Chunk must have exactly one matching Embedding.
+        Matching is performed using Chunk.id and
+        Embedding.chunk_id.
         """
         raise NotImplementedError
 
@@ -47,9 +71,9 @@ class VectorStore(ABC):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
-    ) -> list[SearchResult]:
+    ) -> Iterable[SearchResult]:
         """
-        Search the vector store.
+        Retrieve the most relevant chunks.
 
         Parameters
         ----------
@@ -57,11 +81,24 @@ class VectorStore(ABC):
             Embedding generated from the user's question.
 
         top_k
-            Maximum number of similar chunks to return.
+            Maximum number of results to retrieve.
 
         Returns
         -------
-        list[SearchResult]
-            Search results ordered by descending similarity.
+        Iterable[SearchResult]
+
+            Search results ordered from best match to
+            worst match.
+
+            Returning an Iterable instead of a list allows
+            future vector stores to stream results rather
+            than materialising them all in memory.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def count(self) -> int:
+        """
+        Return the number of stored vectors.
         """
         raise NotImplementedError
