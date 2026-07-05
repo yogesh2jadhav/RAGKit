@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Purpose
 -------
@@ -14,7 +16,6 @@ Does NOT
 - Perform similarity search.
 """
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
