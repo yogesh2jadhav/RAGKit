@@ -1,5 +1,7 @@
 
-models/source_document.py - This will hold only URI and Type of document text, image, pdf
+Read or study project in following sequence it will help to understand.
+
+models/source_document.py 
 sources/source.py
 sources/local_source.py 
 

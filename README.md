@@ -304,3 +304,68 @@ ruff check .
 * DefaultPromptBuilder
 * OllamaLLM
 * RetrievalPipeline
+
+---
+---
+
+# Read or study project in following sequence it will help to understand.
+
+models/source_document.py<br>
+sources/source.py<br>
+sources/local_source.py<br> 
+<br>
+models/document.py<br>
+loaders/loader.py<br>
+loaders/text_loader.py<br>
+loaders/loader_factory.py<br>
+<br>
+models/chunk.py<br>
+chunker/chunker.py<br>
+chunker/character_chunker.py<br>
+<br>
+models/embedding.py<br>
+embeddings/embedder.py<br>
+embeddings/ollama_embedding.py<br>
+<br>
+models/search_result.py<br>
+vectorstores/vector_store.py<br>
+vectorstores/chroma_vector_store.py<br>
+<br>
+retrievers/retriever.py<br>
+retrievers/similarity_retriever.py<br>
+<br>
+prompts/default_prompt_builder.py<br>
+prompts/prompt_builder.py<br>
+<br>
+llms/llm.py<br>
+llms/ollama_llm.py<br>
+<br>
+pipelines/pipeline.py<br>
+pipelines/retrieval_pipeline.py<br>
+
+---
+## Few Q & A
+
+### 1] Why so many interfaces?
+<B>Ans. :</B>  Because everything is replaceable. Instead of OllamaEmbedder you can plug in OpenAIEmbedder without changing anything else.
+Instead of ChromaVectorStore plug FAISS Nothing changes. That's the Dependency Inversion Principle.
+
+### 2] Why SearchResult?
+<B>Ans. :</B> Instead of returning Chunk you return Chunk + score Tomorrow Chunk score distance rerank_score retriever_name No API changes.
+
+### 3] Why LLMResponse?
+<B>Ans. :</B> Instead of str you return LLMResponse Tomorrow content token_usage latency finish_reason provider Still no API changes.
+
+### 4] Why PromptBuilder?
+<B>Ans. :</B> Without PromptBuilder Pipeline would contain
+```bash
+context="\n".join(...)
+prompt=f"..." 
+```
+That violates SRP. Now Pipeline -> PromptBuilder Cleaner.
+
+### 5] Why Retriever?
+<B>Ans. :</B> Without Retriever Pipeline must know Embedder + VectorStore Now Pipeline -> Retriever Pipeline knows less.
+
+### 6] Why Pipeline?
+<B>Ans. :</B> Without Pipeline Every user writes embed(), search(), prompt(), generate() With Pipeline pipeline.invoke(query) That's the public API.
