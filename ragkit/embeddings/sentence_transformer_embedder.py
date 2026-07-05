@@ -24,7 +24,7 @@ from sentence_transformers import SentenceTransformer
 from ragkit.embeddings.embedder import Embedder
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
-
+from ragkit.models.query_embedding import QueryEmbedding
 
 class SentenceTransformerEmbedder(Embedder):
 
@@ -72,3 +72,21 @@ class SentenceTransformerEmbedder(Embedder):
                 model=self._model_name,
                 vector=vector.tolist(),
             )
+
+    def embed_query(
+        self,
+        query: str,
+    ) -> QueryEmbedding:
+        """
+        Generate an embedding for a user query.
+        """
+
+        vector = self._model.encode(
+            query,
+            convert_to_numpy=True,
+        ).tolist()
+
+        return QueryEmbedding(
+            model=self._model_name,
+            vector=vector,
+        )
