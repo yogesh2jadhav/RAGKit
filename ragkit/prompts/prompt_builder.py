@@ -23,7 +23,7 @@ from collections.abc import Iterable
 
 from ragkit.models.search_result import SearchResult
 
-# This is just like interface in java
+#=> This is just like interface with build as a method in java
 class PromptBuilder(ABC):
     """
     Abstract base class for all prompt builders.

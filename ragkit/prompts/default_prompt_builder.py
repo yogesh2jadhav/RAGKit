@@ -23,7 +23,9 @@ from collections.abc import Iterable
 from ragkit.models.search_result import SearchResult
 from ragkit.prompts.prompt_builder import PromptBuilder
 
-
+'''
+=> This class implements build method of PromptBuilder interface. It just do string join of search results
+'''
 class DefaultPromptBuilder(PromptBuilder):
     """
     Default implementation of PromptBuilder.
