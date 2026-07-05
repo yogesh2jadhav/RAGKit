@@ -22,7 +22,7 @@ from collections.abc import Iterable
 
 from ragkit.models.search_result import SearchResult
 
-# This is just like interface
+#=> This is just like interface with one method
 class Retriever(ABC):
     """
     Abstract base class for all retrieval strategies.

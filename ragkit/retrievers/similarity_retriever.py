@@ -26,7 +26,9 @@ from ragkit.vectorstores.vector_store import VectorStore
 
 from ragkit.retrievers.retriever import Retriever
 
-
+'''
+=> This class implement Retriever interface with one method called retrieve.
+'''
 class SimilarityRetriever(Retriever):
     """
     Retriever that performs vector similarity search.
@@ -42,17 +44,16 @@ class SimilarityRetriever(Retriever):
 
     def retrieve(
         self,
-        query: str,
+        query: str, # => This is query in string format.
         top_k: int = 5,
     ) -> Iterable[SearchResult]:
         """
         Retrieve the most relevant search results.
         """
 
-        query_embedding = self._embedder.embed_query(
-            query,
-        )
+        query_embedding = self._embedder.embed_query(query,) #=> Converting String query into embedding. for Verctor search
 
+        # => following is the code to make call to do query on vector db using vectorStore class
         return self._vector_store.search(
             query_embedding=query_embedding,
             top_k=top_k,
