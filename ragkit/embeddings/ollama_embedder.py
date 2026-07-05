@@ -25,6 +25,7 @@ from ollama import Client
 from ragkit.embeddings.embedder import Embedder
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
+from ragkit.models.query_embedding import QueryEmbedding
 
 '''
 => This class have implemnetd Embedder interface.
@@ -85,3 +86,23 @@ class OllamaEmbedder(Embedder):
                 model=self._model,
                 vector=vector,
             )
+
+    def embed_query(
+        self,
+        query: str,
+    ) -> QueryEmbedding:
+        """
+        Generate an embedding for a user query.
+        """
+
+        response = self._client.embed(
+            model=self._model,
+            input=query,
+        )
+
+        vector = response.embeddings[0]
+
+        return QueryEmbedding(
+            model=self._model,
+            vector=vector,
+        )
