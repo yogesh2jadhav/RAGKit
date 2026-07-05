@@ -15,7 +15,9 @@ Does NOT
 - Store chunks.
 - Interact with a vector database.
 """
-
+'''
+=> This is just like java DTO
+'''
 from __future__ import annotations
 
 from dataclasses import dataclass

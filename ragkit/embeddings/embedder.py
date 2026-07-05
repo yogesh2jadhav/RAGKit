@@ -23,7 +23,7 @@ from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 
 '''
-Embedder is here is just like java Interface some class have to implement this.
+=> Embedder is here is just like java Interface with one empty method some class have to implement this.
 '''
 class Embedder(ABC):
 

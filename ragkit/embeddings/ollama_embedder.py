@@ -26,12 +26,19 @@ from ragkit.embeddings.embedder import Embedder
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 
-
+'''
+=> This class have implemnetd Embedder interface.
+   This method will connect to Ollama.
+'''
 class OllamaEmbedder(Embedder):
     """
     Generates embeddings using an Ollama embedding model.
     """
 
+    '''
+    => Following constructor will take model name and host url  as input and
+       will connect to Model Client. Client object will be stored in _client.
+    '''
     def __init__(
         self,
         model: str = "nomic-embed-text",
@@ -40,23 +47,22 @@ class OllamaEmbedder(Embedder):
         """
         Parameters
         ----------
-        model
-            Ollama embedding model.
-
-        host
-            Ollama server URL.
+        model:Ollama embedding model.
+        host: Ollama server URL.
         """
 
         self._model = model
         self._client = Client(host=host)
 
+    '''
+    => This embed take Iterable[Chunk], reason is when we do chunk we are doing stream using yield to support that 
+    we need Iterable[Chunk]. List will not work in this case.
+    '''
     def embed(
         self,
         chunks: Iterable[Chunk],
     ) -> Iterable[Embedding]:
         """
-        Generate embeddings for supplied chunks.
-
         Notes
         -----
         Version 1 performs one request per chunk.
