@@ -23,7 +23,9 @@ from collections.abc import Iterable
 from ragkit.models.chunk import Chunk
 from ragkit.models.document import Document
 
-
+'''
+=> This is an interface with only one empty method call chunk()
+'''
 class Chunker(ABC):
 
     @abstractmethod

@@ -32,6 +32,7 @@ class TextLoader(Loader):
         path = Path(source.uri)
         # => Path.read_text() is simpler and closes the file automatically.
         content = path.read_text(encoding="utf-8")
+        # => This method create Document object and return it. which following infomation.
         return Document(
             id=uuid4(),
             content=content,
