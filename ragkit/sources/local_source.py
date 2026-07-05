@@ -8,7 +8,9 @@ from ragkit.models.source_document import SourceDocument
 from ragkit.sources.source import Source
 
 '''
- Local_Source(Source) here - Source is empty interface. and Local_Source is implemented, method of Source.discover() 
+ => Local_Source(Source) here - Source is interface. and Local_Source is implemented, 
+ 1. Constructor __init__
+ 2. Source.discover() method is don't do return it use yield act like streamer. Return one document at a time.
 '''
 class LocalSource(Source):
     """
@@ -19,7 +21,10 @@ class LocalSource(Source):
         ".txt",
         ".md",
     }
-
+    '''
+    => following is the constructor which take path as input and read full directory. 
+       And set output in _directory. variable
+    '''
     def __init__(self, directory: str) -> None:
         self._directory = Path(directory)
 
@@ -38,7 +43,7 @@ class LocalSource(Source):
                 f"'{self._directory}' is not a directory."
             )
         '''
-        for file in self._directory.iterdir(): file will hold actula file object which is read by 
+        => for file in self._directory.iterdir(): file will hold actula file object which is read by 
         self._directory.iterdir()
         '''
         for file in self._directory.iterdir():
@@ -50,11 +55,13 @@ class LocalSource(Source):
                 continue
 
             ''' 
-            mimetypes is build in method into Python which return => ("text/plain", None) something like this.
+            => mimetypes is build in method into Python which return => ("text/plain", None) something like this.
             and if not able to find info then => application/octet-stream. 
             '''
             mime_type, _ = mimetypes.guess_type(file)
-
+            '''
+            => yield kind of return but it retrun each document at a time. like stream. don't want to complete for loop.
+            '''
             yield SourceDocument(
                 uri=str(file),
                 mime_type=mime_type or "application/octet-stream",

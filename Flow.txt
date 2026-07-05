@@ -1,0 +1,9 @@
+
+models/source_document.py - This will hold only URI and Type of document text, image, pdf
+
+sources/source.py
+sources/local_source.py 
+
+loaders/loader.py
+loaders/text_loader.py
+loaders/loader_factory.py

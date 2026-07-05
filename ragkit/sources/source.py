@@ -12,7 +12,7 @@ from collections.abc import Iterable
 from ragkit.models.source_document import SourceDocument
 
 """"
- Source is empty interface.
+ => Source is empty interface. which have only one method called discover.
 """
 class Source(ABC):
     """

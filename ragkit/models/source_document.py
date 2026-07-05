@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 """
- SourceDocument is just like DTO in java which will be use in code.
+ => SourceDocument is just like DTO in java which will be use in code.
 """
 @dataclass(frozen=True, slots=True)
 class SourceDocument:

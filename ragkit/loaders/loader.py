@@ -6,7 +6,8 @@ from ragkit.models.document import Document
 from ragkit.models.source_document import SourceDocument
 
 """
- This is like empty interface of Loader. Other Class have to implement load method.
+ => This is like interface of Loader. Other Class have to implement load method.
+    It have two methods, 1. supports 2. load
 """
 class Loader(ABC):
     """
