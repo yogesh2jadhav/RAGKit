@@ -27,14 +27,9 @@ class IndexingResult:
 
     Attributes
     ----------
-    documents
-        Number of indexed documents.
-
-    chunks
-        Number of generated chunks.
-
-    embeddings
-        Number of generated embeddings.
+    documents: Number of indexed documents.
+    chunks: Number of generated chunks.
+    embeddings: Number of generated embeddings.
     """
 
     documents: int

@@ -32,6 +32,7 @@ from ragkit.vectorstores.vector_store import VectorStore
 class DocumentIndexer(Indexer):
     """
     Default implementation of Indexer.
+    => Thie class shows load directory -> Read document -> create chunk -> do embeddings -> save to vector store.
     """
 
     def __init__(
@@ -44,14 +45,9 @@ class DocumentIndexer(Indexer):
         """
         Parameters
         ----------
-        chunker
-            Splits documents into chunks.
-
-        embedder
-            Generates embeddings for chunks.
-
-        vector_store
-            Stores generated embeddings.
+        chunker: Splits documents into chunks.
+        embedder: Generates embeddings for chunks.
+        vector_store: Stores generated embeddings.
         """
 
         self._chunker = chunker
