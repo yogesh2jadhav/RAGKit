@@ -277,19 +277,23 @@ ruff check .
 * QueryEmbedding
 * SearchResult
 * LLMResponse
+* IndexingResult
+* SourceDocument
 
 ---
 
 ## Interfaces
 
-* Loader
 * Chunker
 * Embedder
-* VectorStore
-* Retriever
-* PromptBuilder
+* Exception
+* Indexer
 * LLM
+* Loader
 * Pipeline
+* PromptBuilder
+* Retriever
+* VectorStore
 
 ---
 
@@ -304,6 +308,7 @@ ruff check .
 * DefaultPromptBuilder
 * OllamaLLM
 * RetrievalPipeline
+* and many more..
 
 ---
 ---
