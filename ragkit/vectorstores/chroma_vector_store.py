@@ -30,7 +30,9 @@ from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 from uuid import UUID
 
-
+'''
+=> ChromaVectorStore class implement VectorStore Interface and it's 3 methods.
+'''
 class ChromaVectorStore(VectorStore):
     """
     ChromaDB implementation of VectorStore.
@@ -47,7 +49,9 @@ class ChromaVectorStore(VectorStore):
     _CHUNK_INDEX = "_ragkit_chunk_index"
     _START_OFFSET = "_ragkit_start_offset"
     _END_OFFSET = "_ragkit_end_offset"
-    
+    '''
+    => Following constructor will create connection to vector DB.
+    '''
     def __init__(
         self,
         path: str = "./vector_db",
@@ -62,24 +66,29 @@ class ChromaVectorStore(VectorStore):
             name=collection_name,
         )
 
+    '''
+    Following method add() will save embeddings in vector DB.
+    And need two inputs Chunk and embedding.
+    '''
     def add(
         self,
         chunks: Iterable[Chunk],
         embeddings: Iterable[Embedding],
     ) -> None:
         """
-        Store chunks together with their embeddings.
+        => embeddings: The source data. It is a collection or stream containing your Embedding objects.
+        for embedding in embeddings: A standard loop that goes through each individual Embedding item one by one.
+        embedding.chunk_id (The Key): This becomes the dictionary key. It is the identifier of the text chunk.
+        embedding (The Value): This becomes the dictionary value. It is the full object itself (containing the vector array and the model metadata).
 
-        Each Chunk must correspond to exactly one Embedding.
-
-        The Chunk remains the source of truth for all metadata.
+        embedding_by_chunk_id(chunk_id, embedding)
         """
-
-        embedding_by_chunk_id = {embedding.chunk_id: embedding for embedding in embeddings}
+        embedding_by_chunk_id = {
+            embedding.chunk_id: embedding for embedding in embeddings #=> embedding_by_chunk_id(chunk_id, embedding)
+        }
 
         for chunk in chunks:
             embedding = embedding_by_chunk_id.get(chunk.id)
-
             if embedding is None:
                 raise ValueError(f"No embedding found for chunk {chunk.id}.")
 
@@ -92,7 +101,7 @@ class ChromaVectorStore(VectorStore):
                 **chunk.metadata,
             }
 
-            self._collection.add(
+            self._collection.add( # => This method will push everything into vector db
                 ids=[str(chunk.id)],
                 embeddings=[embedding.vector],
                 documents=[chunk.content],
@@ -127,6 +136,9 @@ class ChromaVectorStore(VectorStore):
         if top_k <= 0:
             raise ValueError("top_k must be greater than zero.")
 
+        '''
+        => Following code will do query on vector DB and will get documents, metadata, and distances as retrun.
+        '''
         response = self._collection.query(
             query_embeddings=[query_embedding.vector],
             n_results=top_k,
@@ -137,15 +149,9 @@ class ChromaVectorStore(VectorStore):
             ],
         )
 
-        #
-        # Chroma returns nested lists because it supports
-        # querying multiple vectors in a single request.
-        #
-        #
-        # Chroma always returns one list of results for each
-        # supplied query embedding. Since we query using a
-        # single embedding, extract the first result set.
-        #
+        '''
+        => We get multiple respone from vector DB. but we will go with only index 0 for now.
+        '''
         ids = response["ids"][0]
         documents = response["documents"][0]
         metadatas = response["metadatas"][0]
@@ -156,6 +162,7 @@ class ChromaVectorStore(VectorStore):
         #
         assert len(ids) == len(documents) == len(metadatas) == len(distances)
 
+        # => following for loop is just to create chunk object using output of query and return as SearchResult object.
         for chunk_id, document, metadata, distance in zip(
             ids,
             documents,
@@ -183,24 +190,9 @@ class ChromaVectorStore(VectorStore):
     ) -> Chunk:
         """
         Reconstruct a Chunk from data stored in Chroma.
-
-        Responsibilities
-        ----------------
-        - Convert Chroma metadata back into a Chunk.
-        - Restore UUID fields.
-        - Preserve custom metadata.
-
-        Does NOT
-        --------
-        - Query Chroma.
-        - Perform similarity search.
+        Remove internal metadata fields.
+        Everything remaining belongs to the original chunk.
         """
-
-        #
-        # Remove internal metadata fields.
-        #
-        # Everything remaining belongs to the original chunk.
-        #
         custom_metadata = dict(metadata)
         custom_metadata.pop(self._MODEL, None)
         document_id = UUID(custom_metadata.pop(self._DOCUMENT_ID))

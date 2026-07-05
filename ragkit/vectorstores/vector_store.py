@@ -25,7 +25,12 @@ from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 
-
+'''
+=> VectorStore is interface with 3 empty methods
+    1. add
+    2. search
+    3. count
+'''
 class VectorStore(ABC):
     """
     Abstract base class for all vector stores.

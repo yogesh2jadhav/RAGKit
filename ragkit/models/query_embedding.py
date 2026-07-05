@@ -21,7 +21,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
+'''
+ => This is just like DTO. we have used in chroma_vector_store.py
+'''
 @dataclass(frozen=True, slots=True)
 class QueryEmbedding:
     """

@@ -24,10 +24,10 @@ from dataclasses import dataclass
 from uuid import UUID
 
 '''
- Embedding is just DTO in java
+ => Embedding is just DTO in java
 '''
 @dataclass(frozen=True, slots=True)
 class Embedding:
-    chunk_id: UUID
+    chunk_id: UUID # => this is for linking between chunk and embedding.
     model: str
     vector: list[float]

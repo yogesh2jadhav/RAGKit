@@ -15,3 +15,8 @@ chunker/character_chunker.py
 models/embedding.py
 embeddings/embedder.py
 embeddings/ollama_embedding.py
+
+models/search_result.py
+vectorstores/vector_store.py
+vectorstores/chroma_vector_store.py
+

@@ -21,7 +21,9 @@ from dataclasses import dataclass
 
 from ragkit.models.chunk import Chunk
 
-
+'''
+ => This is just like DTO in java we have used it in chroma_vector_store.py
+'''
 @dataclass(frozen=True, slots=True)
 class SearchResult:
     """
