@@ -29,3 +29,33 @@ prompts/prompt_builder.py
 
 llms/llm.py
 llms/ollama_llm.py
+
+pipelines/pipeline.py
+pipelines/retrieval_pipeline.py
+
+###############
+[[ Few Q & A ]]
+###############
+Why so many interfaces?
+Because everything is replaceable. Instead of OllamaEmbedder you can plug in OpenAIEmbedder without changing anything else.
+Instead of ChromaVectorStore plug FAISS Nothing changes. That's the Dependency Inversion Principle.
+
+6. Why SearchResult?
+Instead of returning Chunk you return Chunk + score Tomorrow Chunk score distance rerank_score retriever_name No API changes.
+
+7. Why LLMResponse?
+Instead of str you return LLMResponse Tomorrow content token_usage latency finish_reason provider Still no API changes.
+
+8. Why PromptBuilder?
+Without PromptBuilder Pipeline would contain
+
+context="\n".join(...)
+prompt=f"..." 
+
+That violates SRP. Now Pipeline -> PromptBuilder Cleaner.
+
+9. Why Retriever?
+Without Retriever Pipeline must know Embedder + VectorStore Now Pipeline -> Retriever Pipeline knows less.
+
+10. Why Pipeline?
+Without Pipeline Every user writes embed(), search(), prompt(), generate() With Pipeline pipeline.invoke(query) That's the public API.

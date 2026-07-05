@@ -20,7 +20,7 @@ from abc import ABC, abstractmethod
 
 from ragkit.models.llm_response import LLMResponse
 
-# It is just like java interface. Some class have to build it.
+# => It is just like java interface with invoke as method. Some class have to build it.
 class Pipeline(ABC):
     """
     Abstract base class for executable pipelines.

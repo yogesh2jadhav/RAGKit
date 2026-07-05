@@ -25,6 +25,11 @@ from ragkit.prompts.prompt_builder import PromptBuilder
 from ragkit.retrievers.retriever import Retriever
 
 
+'''
+=> In this end to end execution happen
+    query -> Retriever.retrieve() -> Embedder.embed_query() -> QueryEmbedding -> 
+    VectorStore.search() -> SearchResult -> PromptBuilder.build() -> Prompt -> LLM.generate() -> LLMResponse
+'''
 class RetrievalPipeline(Pipeline):
     """
     Default Retrieval-Augmented Generation pipeline.
