@@ -342,6 +342,10 @@ llms/ollama_llm.py<br>
 <br>
 pipelines/pipeline.py<br>
 pipelines/retrieval_pipeline.py<br>
+<br>
+indexers/document_indexer.py<br>
+indexers/indexer.py<br>
+models/indexing_result.py<br>
 
 ---
 ## Few Q & A
