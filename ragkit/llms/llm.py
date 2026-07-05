@@ -24,7 +24,9 @@ from typing import Any
 
 from ragkit.models.llm_response import LLMResponse
 
-
+'''
+=> This is just a interface with generate as a method.
+'''
 class LLM(ABC):
     """
     Abstract base class for all LLM implementations.

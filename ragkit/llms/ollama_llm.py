@@ -27,19 +27,22 @@ from ragkit.exceptions import LLMError
 from ragkit.llms.llm import LLM
 from ragkit.models.llm_response import LLMResponse
 
-
+'''
+=> OllamaLLM is class which is implement LLM interface. with generate method.
+'''
 class OllamaLLM(LLM):
     """
     Ollama implementation of the LLM interface.
+    => Following is the constructor for this class which take model name and host url. as input and
+    connect to an Ollama server.
     """
-
     def __init__(
         self,
         model: str,
         host: str = "http://localhost:11434",
     ) -> None:
         self._model = model
-        self._client = ollama.Client(  # We are createing ollam client here.
+        self._client = ollama.Client(  #=> We are createing ollam client here.
             host=host,
         )
 
@@ -53,7 +56,7 @@ class OllamaLLM(LLM):
         """
 
         try:
-            response = self._client.generate(
+            response = self._client.generate( # => where we send Prompt (all search output and question to Ollama) and get response
                 model=self._model,
                 prompt=prompt,
                 options=dict(options) if options else None,
