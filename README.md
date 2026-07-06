@@ -268,6 +268,7 @@ ruff check .
 ---
 
 # RAGKit Architecture - Over View
+# RAGKit Project Structure
 
 ## Core Models
 
@@ -280,35 +281,68 @@ ruff check .
 * IndexingResult
 * SourceDocument
 
----
+## Loading
 
-## Interfaces
-
-* Chunker
-* Embedder
-* Exception
-* Indexer
-* LLM
+* Source
+* LocalSource
 * Loader
-* Pipeline
-* PromptBuilder
-* Retriever
-* VectorStore
-
----
-
-## Concrete Implementations
-
+* LoaderFactory
 * TextLoader
+
+## Chunking
+
 * CharacterChunker
+* SentenceChunker
+* TokenChunker
+* SemanticChunker
+
+## Embeddings
+
+* Embedder
 * OllamaEmbedder
 * SentenceTransformerEmbedder
+
+## Vector Stores
+
+* VectorStore
 * ChromaVectorStore
+
+## Retrieval
+
+* Retriever
 * SimilarityRetriever
+
+## Prompting
+
+* PromptBuilder
 * DefaultPromptBuilder
+
+## LLM
+
+* LLM
 * OllamaLLM
+
+## Pipelines
+
 * RetrievalPipeline
-* and many more..
+
+## Indexing
+
+* Indexer
+* DocumentIndexer
+
+## Facade
+
+* RagKit
+
+## Configuration
+
+* EmbeddingConfig
+* LLMConfig
+* RetrievalConfig
+* VectorStoreConfig
+* RagKitConfig
+
 
 ---
 ---
