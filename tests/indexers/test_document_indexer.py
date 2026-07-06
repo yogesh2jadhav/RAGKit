@@ -14,6 +14,8 @@ from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.source_document import SourceDocument
 from ragkit.sources.source import Source
 from ragkit.vectorstores.vector_store import VectorStore
+from ragkit.transformers.transformer import Transformer
+from uuid import uuid4
 
 
 class FakeSource(Source):
@@ -170,3 +172,75 @@ def test_document_indexer_indexes_documents(monkeypatch):
     assert vector_store.add_called is True
     assert vector_store.chunk_count == 1
     assert vector_store.embedding_count == 1
+
+class FakeTransformer(Transformer):
+    """
+    Fake Transformer used for unit testing.
+    """
+
+    def __init__(self):
+
+        self.called = False
+
+    def transform(
+        self,
+        document: Document,
+    ) -> Document:
+
+        self.called = True
+
+        return document
+
+
+def test_document_indexer_uses_transformer(
+    monkeypatch,
+):
+    """
+    Verify the transformer is invoked before chunking.
+    """
+
+    from ragkit.loaders import loader_factory
+    from ragkit.loaders.loader import Loader
+
+
+    class FakeLoader(Loader):
+
+        @classmethod
+        def supports(
+            cls,
+            source,
+        ) -> bool:
+            return True
+
+        def load(
+            self,
+            source,
+        ) -> Document:
+
+            return Document(
+                id=uuid4(),
+                content="Apache Spark",
+                metadata={},
+            )
+
+
+    monkeypatch.setattr(
+        loader_factory.LoaderFactory,
+        "get_loader",
+        lambda _: FakeLoader(),
+    )
+
+    transformer = FakeTransformer()
+
+    indexer = DocumentIndexer(
+        chunker=FakeChunker(),
+        embedder=FakeEmbedder(),
+        vector_store=FakeVectorStore(),
+        transformer=transformer,
+    )
+
+    indexer.index(
+        FakeSource(),
+    )
+
+    assert transformer.called

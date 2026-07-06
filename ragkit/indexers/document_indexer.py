@@ -27,7 +27,8 @@ from ragkit.loaders.loader_factory import LoaderFactory
 from ragkit.models.indexing_result import IndexingResult
 from ragkit.sources.source import Source
 from ragkit.vectorstores.vector_store import VectorStore
-
+from ragkit.transformers.identity_transformer import IdentityTransformer
+from ragkit.transformers.transformer import Transformer
 
 class DocumentIndexer(Indexer):
     """
@@ -41,18 +42,25 @@ class DocumentIndexer(Indexer):
         chunker: Chunker,
         embedder: Embedder,
         vector_store: VectorStore,
+        transformer: Transformer | None = None,
     ) -> None:
         """
         Parameters
         ----------
-        chunker: Splits documents into chunks.
-        embedder: Generates embeddings for chunks.
-        vector_store: Stores generated embeddings.
+        chunker Splits documents into chunks.
+        embedder Generates embeddings for chunks.
+        vector_store Stores generated embeddings.
+        transformer Transforms documents before chunking.
         """
 
         self._chunker = chunker
         self._embedder = embedder
         self._vector_store = vector_store
+
+        if transformer is None:
+            transformer = IdentityTransformer()
+
+        self._transformer = transformer
 
     def index(
         self,
@@ -81,7 +89,12 @@ class DocumentIndexer(Indexer):
             document = loader.load(
                 source_document,
             )
-
+            #
+            # Transform the document before chunking.
+            #
+            document = self._transformer.transform(
+                document,
+            )
             document_count += 1
 
             #
