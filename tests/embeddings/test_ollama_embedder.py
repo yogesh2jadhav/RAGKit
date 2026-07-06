@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 from ragkit.embeddings.ollama_embedder import OllamaEmbedder
 from ragkit.models.chunk import Chunk
-
+from ragkit.config.embedding_config import EmbeddingConfig
 
 def test_generate_embedding():
 
@@ -43,3 +43,27 @@ def test_generate_embedding():
     ]
 
     embedder._client.embed.assert_called_once()
+
+    def test_create_embedder_with_default_model():
+        """
+        Verify the default embedding model is used.
+        """
+
+        embedder = OllamaEmbedder()
+
+        assert embedder._model_name == "nomic-embed-text"
+
+    def test_create_embedder_with_config():
+        """
+        Verify EmbeddingConfig overrides the default model.
+        """
+
+        config = EmbeddingConfig(
+            model="mxbai-embed-large",
+        )
+
+        embedder = OllamaEmbedder(
+            config=config,
+        )
+
+        assert embedder._model_name == "mxbai-embed-large"

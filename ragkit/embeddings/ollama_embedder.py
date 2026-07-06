@@ -26,6 +26,7 @@ from ragkit.embeddings.embedder import Embedder
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
+from ragkit.config.embedding_config import EmbeddingConfig
 
 '''
 => This class have implemnetd Embedder interface.
@@ -44,17 +45,25 @@ class OllamaEmbedder(Embedder):
         self,
         model: str = "nomic-embed-text",
         host: str = "http://localhost:11434",
+        *,
+        config: EmbeddingConfig | None = None,
     ) -> None:
         """
-        Parameters
-        ----------
-        model:Ollama embedding model.
-        host: Ollama server URL.
+        Initialize the Ollama embedder.
         """
 
-        self._model = model
-        self._client = Client(host=host)
+        #
+        # Configuration object overrides
+        # explicitly supplied values.
+        #
+        if config is not None:
+            model = config.model
 
+        self._model_name = model
+
+        self._client = Client(
+            host=host,
+        )
     '''
     => This embed take Iterable[Chunk], reason is when we do chunk we are doing stream using yield to support that 
     we need Iterable[Chunk]. List will not work in this case.
@@ -64,27 +73,19 @@ class OllamaEmbedder(Embedder):
         chunks: Iterable[Chunk],
     ) -> Iterable[Embedding]:
         """
-        Notes
-        -----
-        Version 1 performs one request per chunk.
-
-        Version 2 will batch multiple chunks into a
-        single Ollama request.
+        Generate embeddings for document chunks.
         """
 
         for chunk in chunks:
-
             response = self._client.embed(
-                model=self._model,
+                model=self._model_name,
                 input=chunk.content,
             )
 
-            vector = response.embeddings[0]
-
             yield Embedding(
                 chunk_id=chunk.id,
-                model=self._model,
-                vector=vector,
+                model=self._model_name,
+                vector=response.embeddings[0],
             )
 
     def embed_query(
@@ -96,13 +97,11 @@ class OllamaEmbedder(Embedder):
         """
 
         response = self._client.embed(
-            model=self._model,
+            model=self._model_name,
             input=query,
         )
 
-        vector = response.embeddings[0]
-
         return QueryEmbedding(
-            model=self._model,
-            vector=vector,
+            model=self._model_name,
+            vector=response.embeddings[0],
         )
