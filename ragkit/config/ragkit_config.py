@@ -7,6 +7,7 @@ Root configuration for RAGKit.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from dataclasses import field
 
 from ragkit.config.embedding_config import EmbeddingConfig
 from ragkit.config.llm_config import LLMConfig
@@ -21,6 +22,13 @@ class RagKitConfig:
     """
 
     embedding: EmbeddingConfig
+
     llm: LLMConfig
-    retrieval: RetrievalConfig = RetrievalConfig()
-    vector_store: VectorStoreConfig = VectorStoreConfig()
+
+    retrieval: RetrievalConfig = field(
+        default_factory=RetrievalConfig,
+    )
+
+    vector_store: VectorStoreConfig = field(
+        default_factory=VectorStoreConfig,
+    )
