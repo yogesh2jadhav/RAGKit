@@ -1,8 +1,10 @@
 from collections.abc import Iterable
 from uuid import uuid4
 
+from ragkit.config.retrieval_config import RetrievalConfig
 from ragkit.embeddings.embedder import Embedder
 from ragkit.models.chunk import Chunk
+from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 from ragkit.retrievers.similarity_retriever import SimilarityRetriever
@@ -14,8 +16,11 @@ class FakeEmbedder(Embedder):
     Fake Embedder used for unit testing.
     """
 
-    def embed(self, texts: Iterable[str]):
-        raise NotImplementedError
+    def embed(
+        self,
+        chunks: Iterable[Chunk],
+    ) -> Iterable[Embedding]:
+        return []
 
     def embed_query(
         self,
@@ -36,7 +41,11 @@ class FakeVectorStore(VectorStore):
         self.last_top_k = None
         self.last_query_embedding = None
 
-    def add(self, chunks, embeddings) -> None:
+    def add(
+        self,
+        chunks,
+        embeddings,
+    ) -> None:
         raise NotImplementedError
 
     def search(
@@ -91,7 +100,7 @@ def test_similarity_retriever_returns_search_results():
 
 def test_similarity_retriever_passes_top_k():
     """
-    Verify top_k is forwarded to the VectorStore.
+    Verify top_k overrides the configured default.
     """
 
     vector_store = FakeVectorStore()
@@ -109,6 +118,30 @@ def test_similarity_retriever_passes_top_k():
     )
 
     assert vector_store.last_top_k == 10
+
+
+def test_similarity_retriever_uses_configured_top_k():
+    """
+    Verify RetrievalConfig provides the default top_k.
+    """
+
+    vector_store = FakeVectorStore()
+
+    retriever = SimilarityRetriever(
+        embedder=FakeEmbedder(),
+        vector_store=vector_store,
+        config=RetrievalConfig(
+            top_k=7,
+        ),
+    )
+
+    list(
+        retriever.retrieve(
+            query="Apache Spark",
+        )
+    )
+
+    assert vector_store.last_top_k == 7
 
 
 def test_similarity_retriever_passes_query_embedding():
