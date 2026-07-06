@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from uuid import uuid4
 
 from ragkit.llms.llm import LLM
 from ragkit.models.chunk import Chunk
@@ -6,16 +7,19 @@ from ragkit.models.llm_response import LLMResponse
 from ragkit.models.search_result import SearchResult
 from ragkit.pipelines.retrieval_pipeline import RetrievalPipeline
 from ragkit.prompts.prompt_builder import PromptBuilder
+from ragkit.rerankers.reranker import Reranker
 from ragkit.retrievers.retriever import Retriever
-from uuid import uuid4
 
 
 class FakeRetriever(Retriever):
+    """
+    Fake Retriever used for unit testing.
+    """
 
     def retrieve(
         self,
         query: str,
-        top_k: int = 5,
+        top_k: int | None = None,
     ) -> Iterable[SearchResult]:
 
         yield SearchResult(
@@ -32,7 +36,30 @@ class FakeRetriever(Retriever):
         )
 
 
+class FakeReranker(Reranker):
+    """
+    Fake Reranker used for unit testing.
+    """
+
+    def __init__(self):
+
+        self.called = False
+
+    def rerank(
+        self,
+        query: str,
+        results: Iterable[SearchResult],
+    ) -> list[SearchResult]:
+
+        self.called = True
+
+        return list(results)
+
+
 class FakePromptBuilder(PromptBuilder):
+    """
+    Fake PromptBuilder used for unit testing.
+    """
 
     def build(
         self,
@@ -44,6 +71,9 @@ class FakePromptBuilder(PromptBuilder):
 
 
 class FakeLLM(LLM):
+    """
+    Fake LLM used for unit testing.
+    """
 
     def generate(
         self,
@@ -58,12 +88,15 @@ class FakeLLM(LLM):
 
 def test_retrieval_pipeline():
     """
-    Verify the RetrievalPipeline orchestrates the
-    Retriever, PromptBuilder and LLM.
+    Verify RetrievalPipeline orchestrates all
+    pipeline components.
     """
+
+    reranker = FakeReranker()
 
     pipeline = RetrievalPipeline(
         retriever=FakeRetriever(),
+        reranker=reranker,
         prompt_builder=FakePromptBuilder(),
         llm=FakeLLM(),
     )
@@ -71,5 +104,7 @@ def test_retrieval_pipeline():
     response = pipeline.invoke(
         query="What is Spark?",
     )
+
+    assert reranker.called
 
     assert response.content == "Answer"

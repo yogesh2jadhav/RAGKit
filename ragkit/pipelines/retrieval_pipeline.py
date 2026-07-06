@@ -23,7 +23,7 @@ from ragkit.models.llm_response import LLMResponse
 from ragkit.pipelines.pipeline import Pipeline
 from ragkit.prompts.prompt_builder import PromptBuilder
 from ragkit.retrievers.retriever import Retriever
-
+from ragkit.rerankers.reranker import Reranker
 
 '''
 => In this end to end execution happen
@@ -38,10 +38,12 @@ class RetrievalPipeline(Pipeline):
     def __init__(
         self,
         retriever: Retriever,
+        reranker: Reranker,
         prompt_builder: PromptBuilder,
         llm: LLM,
     ) -> None:
         self._retriever = retriever
+        self._reranker = reranker
         self._prompt_builder = prompt_builder
         self._llm = llm
 
@@ -53,13 +55,20 @@ class RetrievalPipeline(Pipeline):
         Execute the retrieval pipeline.
         """
 
-        search_results = self._retriever.retrieve(
+        search_results = list(
+            self._retriever.retrieve(
+                query=query,
+            )
+        )
+
+        reranked_results = self._reranker.rerank(
             query=query,
+            results=search_results,
         )
 
         prompt = self._prompt_builder.build(
             query=query,
-            search_results=search_results,
+            search_results=reranked_results,
         )
 
         return self._llm.generate(
