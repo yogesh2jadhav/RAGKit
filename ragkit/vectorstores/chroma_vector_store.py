@@ -16,7 +16,7 @@ Does NOT
 """
 
 from __future__ import annotations
-
+from ragkit.config.vector_store_config import VectorStoreConfig
 
 from collections.abc import Iterable, Mapping
 from typing import Any
@@ -52,11 +52,24 @@ class ChromaVectorStore(VectorStore):
     '''
     => Following constructor will create connection to vector DB.
     '''
+
     def __init__(
         self,
         path: str = "./vector_db",
         collection_name: str = "ragkit",
+        *,
+        config: VectorStoreConfig | None = None,
     ) -> None:
+        """
+        Initialize the Chroma vector store.
+        """
+
+        #
+        # Configuration overrides explicit parameters.
+        #
+        if config is not None:
+            path = config.path
+            collection_name = config.collection_name
 
         self._client = chromadb.PersistentClient(
             path=path,
