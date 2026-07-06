@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from ragkit.exceptions import LLMError
 from ragkit.llms.ollama_llm import OllamaLLM
-
+from ragkit.config.llm_config import LLMConfig
 
 @patch("ragkit.llms.ollama_llm.ollama.Client")
 def test_generate(mock_client):
@@ -98,3 +98,27 @@ def test_generate_failure(mock_client):
         assert str(ex) == (
             "Failed to generate response using Ollama."
         )
+
+    def test_create_llm_with_default_model():
+        """
+        Verify the default model is used.
+        """
+
+        llm = OllamaLLM()
+
+        assert llm._model_name == "qwen3:8b"
+
+    def test_create_llm_with_config():
+        """
+        Verify LLMConfig overrides the default model.
+        """
+
+        config = LLMConfig(
+            model="llama3.1:8b",
+        )
+
+        llm = OllamaLLM(
+            config=config,
+        )
+
+        assert llm._model_name == "llama3.1:8b"
