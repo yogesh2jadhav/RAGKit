@@ -12,6 +12,7 @@ from ragkit.models.document import Document
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.source_document import SourceDocument
+from ragkit.processors import DocumentProcessor
 from ragkit.sources.source import Source
 from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.transformers.transformer import Transformer
@@ -155,9 +156,14 @@ def test_document_indexer_indexes_documents(monkeypatch):
 
     vector_store = FakeVectorStore()
 
-    indexer = DocumentIndexer(
+    processor = DocumentProcessor(
+        transformer=FakeTransformer(),
         chunker=FakeChunker(),
         embedder=FakeEmbedder(),
+    )
+
+    indexer = DocumentIndexer(
+        processor=processor,
         vector_store=vector_store,
     )
 
@@ -232,11 +238,15 @@ def test_document_indexer_uses_transformer(
 
     transformer = FakeTransformer()
 
-    indexer = DocumentIndexer(
+    processor = DocumentProcessor(
+        transformer=transformer,
         chunker=FakeChunker(),
         embedder=FakeEmbedder(),
+    )
+
+    indexer = DocumentIndexer(
+        processor=processor,
         vector_store=FakeVectorStore(),
-        transformer=transformer,
     )
 
     indexer.index(

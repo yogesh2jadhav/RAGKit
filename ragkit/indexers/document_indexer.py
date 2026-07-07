@@ -29,6 +29,7 @@ from ragkit.sources.source import Source
 from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.transformers.identity_transformer import IdentityTransformer
 from ragkit.transformers.transformer import Transformer
+from ragkit.processors.document_processor import DocumentProcessor
 
 class DocumentIndexer(Indexer):
     """
@@ -39,28 +40,22 @@ class DocumentIndexer(Indexer):
     def __init__(
         self,
         *,
-        chunker: Chunker,
-        embedder: Embedder,
+        processor: DocumentProcessor,
         vector_store: VectorStore,
-        transformer: Transformer | None = None,
     ) -> None:
         """
         Parameters
         ----------
-        chunker Splits documents into chunks.
-        embedder Generates embeddings for chunks.
-        vector_store Stores generated embeddings.
-        transformer Transforms documents before chunking.
+        processor
+            Processes loaded documents into chunks
+            and embeddings.
+
+        vector_store
+            Stores generated embeddings.
         """
 
-        self._chunker = chunker
-        self._embedder = embedder
+        self._processor = processor
         self._vector_store = vector_store
-
-        if transformer is None:
-            transformer = IdentityTransformer()
-
-        self._transformer = transformer
 
     def index(
         self,
@@ -89,35 +84,12 @@ class DocumentIndexer(Indexer):
             document = loader.load(
                 source_document,
             )
-            #
-            # Transform the document before chunking.
-            #
-            document = self._transformer.transform(
-                document,
-            )
             document_count += 1
-
-            #
-            # Materialize the chunks because they are
-            # consumed twice:
-            #
-            #   1. Embedder
-            #   2. VectorStore
-            #
-            chunks = list(
-                self._chunker.chunk(
-                    document,
-                )
+            chunks, embeddings = self._processor.process(
+                document,
             )
 
             chunk_count += len(chunks)
-
-            embeddings = list(
-                self._embedder.embed(
-                    chunks,
-                )
-            )
-
             embedding_count += len(embeddings)
 
             self._vector_store.add(
