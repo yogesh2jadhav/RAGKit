@@ -9,9 +9,11 @@ from ragkit.rerankers.llm_reranker import LLMReranker
 
 
 class FakeLLM(LLM):
+    """
+    Fake LLM used for unit testing.
+    """
 
     def __init__(self):
-
         self.called = False
 
     def generate(
@@ -22,12 +24,15 @@ class FakeLLM(LLM):
 
         self.called = True
 
+        #
+        # Swap the first two results.
+        #
         return LLMResponse(
-            content="1",
+            content="2,1",
         )
 
 
-def test_llm_reranker_returns_results():
+def test_llm_reranker_reorders_results():
 
     llm = FakeLLM()
 
@@ -42,18 +47,33 @@ def test_llm_reranker_returns_results():
                 id=uuid4(),
                 document_id=uuid4(),
                 index=0,
-                content="Apache Spark",
+                content="First",
                 start_offset=0,
-                end_offset=12,
+                end_offset=5,
                 metadata={},
             ),
             score=0.9,
-        )
+        ),
+        SearchResult(
+            chunk=Chunk(
+                id=uuid4(),
+                document_id=uuid4(),
+                index=1,
+                content="Second",
+                start_offset=0,
+                end_offset=6,
+                metadata={},
+            ),
+            score=0.8,
+        ),
     ]
 
     reranked = reranker.rerank(
-        query="What is Spark?",
+        query="test",
         results=results,
     )
 
-    assert reranked == results
+    assert llm.called
+
+    assert reranked[0].chunk.content == "Second"
+    assert reranked[1].chunk.content == "First"

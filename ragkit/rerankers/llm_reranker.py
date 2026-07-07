@@ -24,6 +24,8 @@ from ragkit.config.reranker_config import RerankerConfig
 from ragkit.llms.llm import LLM
 from ragkit.models.search_result import SearchResult
 from ragkit.rerankers.reranker import Reranker
+from ragkit.rerankers.ranking_parser import RankingParser
+from ragkit.rerankers.ranking_prompt_builder import RankingPromptBuilder
 
 
 class LLMReranker(Reranker):
@@ -40,6 +42,10 @@ class LLMReranker(Reranker):
 
         self._llm = llm
 
+        self._prompt_builder = RankingPromptBuilder()
+
+        self._parser = RankingParser()
+
         if config is None:
             config = RerankerConfig()
 
@@ -51,10 +57,77 @@ class LLMReranker(Reranker):
         results: Iterable[SearchResult],
     ) -> list[SearchResult]:
         """
-        Rerank retrieved search results.
-
-        This implementation will be completed
-        in the next commit.
+        Rerank search results using an LLM.
         """
 
-        return list(results)
+        #
+        # Convert iterable into a list because
+        # we'll iterate multiple times.
+        #
+        results = list(results)
+
+        if not results:
+            return []
+
+        #
+        # Build ranking prompt.
+        #
+        prompt = self._prompt_builder.build(
+            query=query,
+            search_results=results,
+        )
+
+        #
+        # Ask the LLM to rank passages.
+        #
+        response = self._llm.generate(
+            prompt=prompt,
+            options={
+                "temperature": self._config.temperature,
+                "num_predict": self._config.max_tokens,
+            },
+        )
+
+        #
+        # Parse ranking.
+        #
+        ranking = self._parser.parse(
+            response.content,
+        )
+
+        reranked: list[SearchResult] = []
+
+        used: set[int] = set()
+
+        #
+        # Add ranked results.
+        #
+        for index in ranking:
+            if index < 0:
+                continue
+
+            if index >= len(results):
+                continue
+
+            if index in used:
+                continue
+
+            reranked.append(
+                results[index],
+            )
+
+            used.add(index)
+
+        #
+        # Preserve remaining results.
+        #
+        for index, result in enumerate(results):
+            if index not in used:
+                reranked.append(
+                    result,
+                )
+
+        #
+        # Return configured number of results.
+        #
+        return reranked[: self._config.top_k]
