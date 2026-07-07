@@ -266,6 +266,11 @@ ruff check .
 ```
 ---
 ---
+# How to Start 
+* git clone ...
+* cd RAGKit
+* pip install -e .
+* python examples/01_...... keep going..
 
 # RAGKit Architecture - Over View
 # RAGKit Project Structure
