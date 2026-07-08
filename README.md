@@ -272,6 +272,8 @@ ruff check .
 * pip install -e .
 * python examples/01_...... keep going..
 
+# Check Examples Folder - It will help you a lot
+
 # RAGKit Architecture - Over View
 # RAGKit Project Structure
 
