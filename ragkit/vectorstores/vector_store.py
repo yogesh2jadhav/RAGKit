@@ -102,6 +102,28 @@ class VectorStore(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def iter_chunks(
+        self,
+    ) -> Iterable[Chunk]:
+        """
+        Iterate over every indexed chunk.
+
+        Returns
+        -------
+        Iterable[Chunk]
+
+            All chunks currently stored in the vector store.
+
+        Notes
+        -----
+        Returning an Iterable keeps the interface compatible
+        with vector stores that stream results instead of
+        loading the entire index into memory.
+        """
+        raise NotImplementedError
+
+
+    @abstractmethod
     def count(self) -> int:
         """
         Return the number of stored vectors.

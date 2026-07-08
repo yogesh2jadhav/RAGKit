@@ -9,7 +9,7 @@ from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 from ragkit.retrievers.similarity_retriever import SimilarityRetriever
 from ragkit.vectorstores.vector_store import VectorStore
-
+from collections.abc import Iterable
 
 class FakeEmbedder(Embedder):
     """
@@ -75,6 +75,14 @@ class FakeVectorStore(VectorStore):
 
     def count(self) -> int:
         return 0
+
+    def iter_chunks(
+        self,
+    ) -> Iterable[Chunk]:
+        """
+        Fake implementation used only for testing.
+        """
+        return iter(())
 
 
 def test_similarity_retriever_returns_search_results():
@@ -166,3 +174,5 @@ def test_similarity_retriever_passes_query_embedding():
     assert vector_store.last_query_embedding is not None
     assert vector_store.last_query_embedding.model == "unit-test-model"
     assert vector_store.last_query_embedding.vector == [0.1, 0.2, 0.3]
+
+   

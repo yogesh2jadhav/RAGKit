@@ -17,7 +17,8 @@ from ragkit.sources.source import Source
 from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.transformers.transformer import Transformer
 from uuid import uuid4
-
+from collections.abc import Iterable
+from ragkit.models.chunk import Chunk
 
 class FakeSource(Source):
     """
@@ -138,6 +139,11 @@ class FakeVectorStore(VectorStore):
 
     def count(self) -> int:
         return self.embedding_count
+
+    def iter_chunks(
+        self,
+    ) -> Iterable[Chunk]:
+        return iter(())
 
 
 def test_document_indexer_indexes_documents(monkeypatch):

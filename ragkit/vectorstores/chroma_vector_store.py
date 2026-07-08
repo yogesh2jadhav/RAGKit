@@ -121,6 +121,48 @@ class ChromaVectorStore(VectorStore):
                 metadatas=[metadata],
             )
 
+    def iter_chunks(
+        self,
+    ) -> Iterable[Chunk]:
+        """
+        Iterate over every stored chunk.
+
+        Responsibilities
+        ----------------
+        - Read all chunks from ChromaDB.
+        - Reconstruct Chunk objects.
+        - Yield chunks.
+
+        Does NOT
+        --------
+        - Return embeddings.
+        - Perform similarity search.
+        """
+
+        response = self._collection.get(
+            include=[
+                "documents",
+                "metadatas",
+            ],
+        )
+
+        ids = response["ids"]
+        documents = response["documents"]
+        metadatas = response["metadatas"]
+
+        assert len(ids) == len(documents) == len(metadatas)
+
+        for chunk_id, document, metadata in zip(
+            ids,
+            documents,
+            metadatas,
+            strict=True,
+        ):
+            yield self._build_chunk(
+                chunk_id=chunk_id,
+                document=document,
+                metadata=metadata,
+            )
     def count(self) -> int:
         """
         Returns the number of stored vectors.
@@ -222,3 +264,46 @@ class ChromaVectorStore(VectorStore):
             end_offset=end_offset,
             metadata=custom_metadata,
         )
+
+    def iter_chunks(
+        self,
+    ) -> Iterable[Chunk]:
+        """
+        Iterate over every stored chunk.
+
+        Responsibilities
+        ----------------
+        - Read all chunks from ChromaDB.
+        - Reconstruct Chunk objects.
+        - Yield chunks.
+
+        Does NOT
+        --------
+        - Return embeddings.
+        - Perform similarity search.
+        """
+
+        response = self._collection.get(
+            include=[
+                "documents",
+                "metadatas",
+            ],
+        )
+
+        ids = response["ids"]
+        documents = response["documents"]
+        metadatas = response["metadatas"]
+
+        assert len(ids) == len(documents) == len(metadatas)
+
+        for chunk_id, document, metadata in zip(
+            ids,
+            documents,
+            metadatas,
+            strict=True,
+        ):
+            yield self._build_chunk(
+                chunk_id=chunk_id,
+                document=document,
+                metadata=metadata,
+            )
