@@ -12,6 +12,11 @@ version = "0.1.0"
 description = "A modular Retrieval-Augmented Generation framework"
 requires-python = ">=3.12"
 
+dependencies = [
+    "chromadb",
+    "ollama",
+    "rank-bm25",
+]
 
 [tool.setuptools]
 packages = ["ragkit"]

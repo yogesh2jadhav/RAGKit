@@ -71,7 +71,7 @@ source ~/.zshrc
 
 ---
 
-## 4. Verify pyenv Installation
+## 4. Verify pyenv and rank-bm25 Installation
 
 List installed Python versions:
 
@@ -103,7 +103,11 @@ Expected output:
 * system
   3.12.11
 ```
+Install rank-bm25:
 
+```bash
+pip install rank-bm25
+```
 ---
 
 ## 5. Create the Project
