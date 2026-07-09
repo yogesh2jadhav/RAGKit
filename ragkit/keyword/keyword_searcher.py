@@ -5,7 +5,7 @@ Defines the interface for keyword-based search.
 
 Responsibilities
 ----------------
-- Perform lexical (keyword) search.
+- Perform keyword search.
 - Return ranked search results.
 
 Does NOT
@@ -28,10 +28,6 @@ from ragkit.models.search_result import SearchResult
 class KeywordSearcher(ABC):
     """
     Abstract base class for keyword search.
-
-    Concrete implementations may use BM25,
-    Lucene, Elasticsearch, SQLite FTS,
-    or any other keyword search algorithm.
     """
 
     @abstractmethod
@@ -42,7 +38,7 @@ class KeywordSearcher(ABC):
         top_k: int = 5,
     ) -> Iterable[SearchResult]:
         """
-        Search for documents using keywords.
+        Perform keyword search.
 
         Parameters
         ----------
@@ -50,7 +46,7 @@ class KeywordSearcher(ABC):
             User query.
 
         top_k
-            Maximum number of search results.
+            Maximum number of results.
 
         Returns
         -------

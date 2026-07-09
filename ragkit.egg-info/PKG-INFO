@@ -3,3 +3,6 @@ Name: ragkit
 Version: 0.1.0
 Summary: A modular Retrieval-Augmented Generation framework
 Requires-Python: >=3.12
+Requires-Dist: chromadb
+Requires-Dist: ollama
+Requires-Dist: rank-bm25
