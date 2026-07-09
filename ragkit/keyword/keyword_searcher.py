@@ -1,20 +1,21 @@
 """
 Purpose
 -------
-Defines the contract for keyword-based search.
+Defines the interface for keyword-based search.
 
 Responsibilities
 ----------------
-- Accept a text query.
+- Perform lexical (keyword) search.
 - Return ranked search results.
 
 Does NOT
 --------
 - Generate embeddings.
-- Perform vector similarity search.
-- Generate LLM responses.
+- Perform vector search.
+- Merge search results.
+- Call an LLM.
 """
-# => This is just like java Interface with one empty method called search.
+
 from __future__ import annotations
 
 from abc import ABC
@@ -26,7 +27,11 @@ from ragkit.models.search_result import SearchResult
 
 class KeywordSearcher(ABC):
     """
-    Base class for keyword search implementations.
+    Abstract base class for keyword search.
+
+    Concrete implementations may use BM25,
+    Lucene, Elasticsearch, SQLite FTS,
+    or any other keyword search algorithm.
     """
 
     @abstractmethod
@@ -37,6 +42,19 @@ class KeywordSearcher(ABC):
         top_k: int = 5,
     ) -> Iterable[SearchResult]:
         """
-        Search for documents using keyword matching.
+        Search for documents using keywords.
+
+        Parameters
+        ----------
+        query
+            User query.
+
+        top_k
+            Maximum number of search results.
+
+        Returns
+        -------
+        Iterable[SearchResult]
+            Ranked search results.
         """
         raise NotImplementedError
