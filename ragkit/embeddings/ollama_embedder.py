@@ -81,7 +81,8 @@ class OllamaEmbedder(Embedder):
                 model=self._model_name,
                 input=chunk.content,
             )
-
+            if not response.embeddings:
+                raise RuntimeError("Ollama returned no embedding for document chunk.")
             yield Embedding(
                 chunk_id=chunk.id,
                 model=self._model_name,
@@ -100,7 +101,8 @@ class OllamaEmbedder(Embedder):
             model=self._model_name,
             input=query,
         )
-
+        if not response.embeddings:
+            raise RuntimeError("Ollama returned no embedding for the query.")
         return QueryEmbedding(
             model=self._model_name,
             vector=response.embeddings[0],

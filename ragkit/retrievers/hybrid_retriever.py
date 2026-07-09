@@ -61,9 +61,11 @@ class HybridRetriever(Retriever):
         Retrieve documents using hybrid retrieval.
         """
 
-        vector_results = self._retriever.retrieve(
-            query=query,
-            top_k=top_k,
+        vector_results = list(
+            self._retriever.retrieve(
+                query=query,
+                top_k=top_k,
+            )
         )
 
         keyword_results = list(
