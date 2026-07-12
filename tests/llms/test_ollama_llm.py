@@ -1,9 +1,12 @@
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
+from pytest import raises
+
+from ragkit.config.llm_config import LLMConfig
 from ragkit.exceptions import LLMError
 from ragkit.llms.ollama_llm import OllamaLLM
-from ragkit.config.llm_config import LLMConfig
+
 
 @patch("ragkit.llms.ollama_llm.ollama.Client")
 def test_generate(mock_client):
@@ -88,37 +91,37 @@ def test_generate_failure(mock_client):
         model="llama3.2",
     )
 
-    try:
+    with raises(LLMError) as ex:
         llm.generate(
             prompt="Hello",
         )
-        assert False
 
-    except LLMError as ex:
-        assert str(ex) == (
-            "Failed to generate response using Ollama."
-        )
+    assert str(ex.value) == (
+        "Failed to generate response using Ollama: Connection failed"
+    )
 
-    def test_create_llm_with_default_model():
-        """
-        Verify the default model is used.
-        """
 
-        llm = OllamaLLM()
+def test_create_llm_with_default_model():
+    """
+    Verify the default model is used.
+    """
 
-        assert llm._model_name == "qwen3:8b"
+    llm = OllamaLLM()
 
-    def test_create_llm_with_config():
-        """
-        Verify LLMConfig overrides the default model.
-        """
+    assert llm._model_name == "qwen3:8b"
 
-        config = LLMConfig(
-            model="llama3.1:8b",
-        )
 
-        llm = OllamaLLM(
-            config=config,
-        )
+def test_create_llm_with_config():
+    """
+    Verify LLMConfig overrides the default model.
+    """
 
-        assert llm._model_name == "llama3.1:8b"
+    config = LLMConfig(
+        model="llama3.1:8b",
+    )
+
+    llm = OllamaLLM(
+        config=config,
+    )
+
+    assert llm._model_name == "llama3.1:8b"

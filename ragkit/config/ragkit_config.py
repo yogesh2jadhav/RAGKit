@@ -1,7 +1,16 @@
 """
 Purpose
 -------
-Root configuration for RAGKit.
+Aggregate all RAGKit configuration.
+
+Responsibilities
+----------------
+- Group component configurations.
+- Provide sensible defaults.
+
+Does NOT
+--------
+- Create framework components.
 """
 
 from __future__ import annotations
@@ -9,24 +18,38 @@ from __future__ import annotations
 from dataclasses import dataclass
 from dataclasses import field
 
+from ragkit.config.chunker_config import ChunkerConfig
 from ragkit.config.embedding_config import EmbeddingConfig
 from ragkit.config.llm_config import LLMConfig
+from ragkit.config.reranker_config import RerankerConfig
 from ragkit.config.retrieval_config import RetrievalConfig
 from ragkit.config.vector_store_config import VectorStoreConfig
 
-# => this is main config class which hold or collect all config into one
+
 @dataclass(frozen=True, slots=True)
 class RagKitConfig:
     """
-    Root configuration object.
+    Root configuration for the framework.
     """
 
-    embedding: EmbeddingConfig
+    chunker: ChunkerConfig = field(
+        default_factory=ChunkerConfig,
+    )
 
-    llm: LLMConfig
+    embedding: EmbeddingConfig = field(
+        default_factory=EmbeddingConfig,
+    )
+
+    llm: LLMConfig = field(
+        default_factory=LLMConfig,
+    )
 
     retrieval: RetrievalConfig = field(
         default_factory=RetrievalConfig,
+    )
+
+    reranker: RerankerConfig = field(
+        default_factory=RerankerConfig,
     )
 
     vector_store: VectorStoreConfig = field(

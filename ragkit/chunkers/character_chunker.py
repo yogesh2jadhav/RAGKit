@@ -24,6 +24,7 @@ from uuid import uuid4
 from ragkit.chunkers.chunker import Chunker
 from ragkit.models.chunk import Chunk
 from ragkit.models.document import Document
+from ragkit.config.chunker_config import ChunkerConfig
 
 '''
 => CharacterChunker is the class which have implement Chunker interface.
@@ -38,17 +39,14 @@ class CharacterChunker(Chunker):
         self,
         chunk_size: int = 1000,
         chunk_overlap: int = 200,
+        config: ChunkerConfig | None = None
     ) -> None:
 
-        if chunk_size <= 0:
-            raise ValueError(
-                "chunk_size must be greater than zero."
-            )
+        if config is not None:
+            chunk_size = config.chunk_size
 
-        if chunk_overlap >= chunk_size:
-            raise ValueError(
-                "chunk_overlap must be smaller than chunk_size."
-            )
+        if config is not None:
+            chunk_overlap = config.chunk_overlap
 
         self._chunk_size = chunk_size
         self._chunk_overlap = chunk_overlap
