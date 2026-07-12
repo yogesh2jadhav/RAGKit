@@ -88,5 +88,5 @@ class OllamaLLM(LLM):
 
         except Exception as ex:
             raise LLMError(
-                "Failed to generate response using Ollama."
+                f"Failed to generate response using Ollama: {ex}"
             ) from ex

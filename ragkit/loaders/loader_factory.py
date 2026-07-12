@@ -26,6 +26,6 @@ class LoaderFactory:
             if loader.supports(source): # => if condition match you will get correct loader refreance as return.
                 return loader()
 
-        raise ValueError(
-            f"No loader found for '{source.uri}'"
-        )
+        from ragkit.exceptions.loader_error import LoaderError
+
+        raise LoaderError(f"No loader supports source: {type(source).__name__}")

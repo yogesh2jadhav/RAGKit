@@ -19,6 +19,7 @@ Does NOT
 """
 
 from __future__ import annotations
+from ragkit.logger import logger
 
 from ragkit.chunkers.chunker import Chunker
 from ragkit.embeddings.embedder import Embedder
@@ -30,7 +31,7 @@ from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.transformers.identity_transformer import IdentityTransformer
 from ragkit.transformers.transformer import Transformer
 from ragkit.processors.document_processor import DocumentProcessor
-
+from ragkit.logger import logger
 class DocumentIndexer(Indexer):
     """
     Default implementation of Indexer.

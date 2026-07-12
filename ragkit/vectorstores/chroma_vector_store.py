@@ -16,6 +16,8 @@ Does NOT
 """
 
 from __future__ import annotations
+from ragkit.exceptions.vector_store_error import VectorStoreError
+
 from ragkit.config.vector_store_config import VectorStoreConfig
 
 from collections.abc import Iterable, Mapping
@@ -103,7 +105,7 @@ class ChromaVectorStore(VectorStore):
         for chunk in chunks:
             embedding = embedding_by_chunk_id.get(chunk.id)
             if embedding is None:
-                raise ValueError(f"No embedding found for chunk {chunk.id}.")
+                raise VectorStoreError(f"No embedding found for chunk {chunk.id}.")
 
             metadata = {
                 self._MODEL: embedding.model,
@@ -189,7 +191,7 @@ class ChromaVectorStore(VectorStore):
         - Rank or rerank results.
         """
         if top_k <= 0:
-            raise ValueError("top_k must be greater than zero.")
+            raise VectorStoreError("top_k must be greater than zero.")
 
         '''
         => Following code will do query on vector DB and will get documents, metadata, and distances as retrun.

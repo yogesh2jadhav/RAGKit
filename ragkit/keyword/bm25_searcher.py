@@ -22,6 +22,7 @@ import re
 from collections.abc import Iterable
 
 from rank_bm25 import BM25Okapi
+from ragkit.exceptions.keyword_searcher_error import KeywordSearcherError
 
 from ragkit.keyword.keyword_searcher import KeywordSearcher
 from ragkit.models.chunk import Chunk
@@ -59,7 +60,7 @@ class BM25Searcher(KeywordSearcher):
         """
 
         if self._bm25 is None:
-            raise RuntimeError("BM25 index has not been built.")
+            raise KeywordSearcherError("BM25 index has not been built.")
 
         query_tokens = self._tokenize(
             query,

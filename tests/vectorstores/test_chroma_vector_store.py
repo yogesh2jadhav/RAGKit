@@ -5,7 +5,9 @@ from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
+from pytest import raises
 
+from ragkit.exceptions.vector_store_error import VectorStoreError
 
 def create_chunk(content: str, index: int = 0) -> Chunk:
     """
@@ -78,14 +80,11 @@ def test_missing_embedding_for_chunk(tmp_path):
         vector=[0.1, 0.2],
     )
 
-    try:
+    with raises(VectorStoreError):
         store.add(
             chunks=[chunk],
             embeddings=[embedding],
         )
-        assert False
-    except ValueError:
-        pass
 
 
 def test_store_embeddings_in_any_order(tmp_path):
