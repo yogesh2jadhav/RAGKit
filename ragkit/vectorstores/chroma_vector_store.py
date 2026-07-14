@@ -285,6 +285,6 @@ class ChromaVectorStore(VectorStore):
             return None
 
         if len(filters) == 1:
-            return filters
+            return dict(filters)
 
         return {"$and": [{key: value} for key, value in filters.items()]}
