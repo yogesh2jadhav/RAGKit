@@ -40,5 +40,6 @@ class TextLoader(Loader):
                 "uri": source.uri,
                 "mime_type": source.mime_type,
                 "filename": path.name,
+                **source.metadata,
             },
         )

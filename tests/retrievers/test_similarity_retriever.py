@@ -42,7 +42,7 @@ class FakeVectorStore(VectorStore):
         self.last_top_k = None
         self.last_query_embedding = None
         self.last_filters = None
-        
+
     def add(
         self,
         chunks,

@@ -161,7 +161,7 @@ class ChromaVectorStore(VectorStore):
         response = self._collection.query(
             query_embeddings=[query_embedding.vector],
             n_results=top_k,
-            where=filters,
+            where=self._build_where_clause(filters),
             include=[
                 "documents",
                 "metadatas",
@@ -273,3 +273,18 @@ class ChromaVectorStore(VectorStore):
                 metadata=metadata,
             )
 
+    @staticmethod
+    def _build_where_clause(
+        filters: dict[str, Any] | None,
+    ) -> dict[str, Any] | None:
+        """
+        Convert RAGKit filters into a Chroma where clause.
+        """
+
+        if not filters:
+            return None
+
+        if len(filters) == 1:
+            return filters
+
+        return {"$and": [{key: value} for key, value in filters.items()]}

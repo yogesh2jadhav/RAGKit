@@ -75,13 +75,14 @@ class CharacterChunker(Chunker):
                 len(content),
             )
 
-            yield Chunk( # yield = we use for Streaming.
+            yield Chunk(
                 id=uuid4(),
                 document_id=document.id,
                 index=index,
                 start_offset=start,
                 end_offset=end,
-                content=content[start:end],# Here we are just doing string split.
+                content=content[start:end],
+                metadata=dict(document.metadata),
             )
 
             start += (

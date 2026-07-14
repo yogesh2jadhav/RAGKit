@@ -65,4 +65,5 @@ class LocalSource(Source):
             yield SourceDocument(
                 uri=str(file),
                 mime_type=mime_type or "application/octet-stream",
+                metadata={},
             )
