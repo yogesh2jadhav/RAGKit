@@ -19,6 +19,7 @@ Does NOT
 """
 
 from __future__ import annotations
+from typing import Any
 
 from ragkit.keyword.keyword_searcher import KeywordSearcher
 from ragkit.models.search_result import SearchResult
@@ -56,6 +57,7 @@ class HybridRetriever(Retriever):
         query: str,
         *,
         top_k: int = 5,
+        filters: dict[str, Any] | None = None,
     ) -> list[SearchResult]:
         """
         Retrieve documents using hybrid retrieval.
@@ -65,6 +67,7 @@ class HybridRetriever(Retriever):
             self._retriever.retrieve(
                 query=query,
                 top_k=top_k,
+                filters=filters,
             )
         )
 

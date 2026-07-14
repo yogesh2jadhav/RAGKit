@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from typing import Any
 from uuid import uuid4
 
 from ragkit.keyword.keyword_searcher import KeywordSearcher
@@ -17,11 +18,8 @@ class FakeRetriever(Retriever):
         self,
         results: list[SearchResult],
     ) -> None:
-
         self.results = results
-
         self.last_query = None
-
         self.last_top_k = None
 
     def retrieve(
@@ -29,12 +27,10 @@ class FakeRetriever(Retriever):
         query: str,
         *,
         top_k: int = 5,
+        filters: dict[str, Any] | None = None,
     ) -> list[SearchResult]:
-
         self.last_query = query
-
         self.last_top_k = top_k
-
         return self.results
 
 
@@ -47,11 +43,8 @@ class FakeKeywordSearcher(KeywordSearcher):
         self,
         results: list[SearchResult],
     ) -> None:
-
         self.results = results
-
         self.last_query = None
-
         self.last_top_k = None
 
     def search(
@@ -60,11 +53,8 @@ class FakeKeywordSearcher(KeywordSearcher):
         *,
         top_k: int = 5,
     ) -> Iterable[SearchResult]:
-
         self.last_query = query
-
         self.last_top_k = top_k
-
         yield from self.results
 
 
@@ -74,7 +64,6 @@ def create_result(
     """
     Create a SearchResult for testing.
     """
-
     chunk = Chunk(
         id=uuid4(),
         document_id=uuid4(),
@@ -84,7 +73,6 @@ def create_result(
         end_offset=len(content),
         metadata={},
     )
-
     return SearchResult(
         chunk=chunk,
         score=1.0,
@@ -95,7 +83,6 @@ def test_hybrid_retriever_merges_results():
     """
     Verify semantic and keyword results are merged.
     """
-
     semantic = [
         create_result(
             "Apache Spark",

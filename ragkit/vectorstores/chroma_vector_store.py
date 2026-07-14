@@ -134,7 +134,7 @@ class ChromaVectorStore(VectorStore):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
-        filters: dict[str, str] | None = None,
+        filters: dict[str, Any] | None = None,
     ) -> Iterable[SearchResult]:
         """
         Search for chunks similar to the supplied query.

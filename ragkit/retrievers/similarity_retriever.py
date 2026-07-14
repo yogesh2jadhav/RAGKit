@@ -17,6 +17,7 @@ Does NOT
 """
 
 from __future__ import annotations
+from typing import Any
 
 from collections.abc import Iterable
 
@@ -56,8 +57,9 @@ class SimilarityRetriever(Retriever):
 
     def retrieve(
         self,
-        query: str,  # => This is query in string format.
+        query: str,
         top_k: int | None = None,
+        filters: dict[str, Any] | None = None,
     ) -> Iterable[SearchResult]:
         """
         Retrieve the most relevant search results.
@@ -85,4 +87,5 @@ class SimilarityRetriever(Retriever):
         return self._vector_store.search(
             query_embedding=query_embedding,
             top_k=top_k,
+            filters=filters,
         )

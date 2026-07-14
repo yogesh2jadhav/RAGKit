@@ -24,6 +24,7 @@ from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
+from typing import Any
 
 '''
 => VectorStore is interface with 3 empty methods
@@ -76,7 +77,7 @@ class VectorStore(ABC):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
-        filters: dict[str, str] | None = None,
+        filters: dict[str, Any] | None = None,
     ) -> Iterable[SearchResult]:
         """
         Retrieve the most relevant chunks.

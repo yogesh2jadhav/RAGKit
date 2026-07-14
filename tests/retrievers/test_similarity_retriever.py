@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from typing import Any
 from uuid import uuid4
 
 from ragkit.config.retrieval_config import RetrievalConfig
@@ -40,7 +41,8 @@ class FakeVectorStore(VectorStore):
     def __init__(self) -> None:
         self.last_top_k = None
         self.last_query_embedding = None
-
+        self.last_filters = None
+        
     def add(
         self,
         chunks,
@@ -52,9 +54,11 @@ class FakeVectorStore(VectorStore):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
+        filters: dict[str, Any] | None = None,
     ):
         self.last_query_embedding = query_embedding
         self.last_top_k = top_k
+        self.last_filters = filters
 
         chunk = Chunk(
             id=uuid4(),
@@ -174,5 +178,30 @@ def test_similarity_retriever_passes_query_embedding():
     assert vector_store.last_query_embedding is not None
     assert vector_store.last_query_embedding.model == "unit-test-model"
     assert vector_store.last_query_embedding.vector == [0.1, 0.2, 0.3]
+
+def test_similarity_retriever_passes_filters():
+    """
+    Verify metadata filters are forwarded to the VectorStore.
+    """
+
+    vector_store = FakeVectorStore()
+
+    retriever = SimilarityRetriever(
+        embedder=FakeEmbedder(),
+        vector_store=vector_store,
+    )
+
+    filters = {
+        "author": "Yogesh",
+    }
+
+    list(
+        retriever.retrieve(
+            query="Apache Spark",
+            filters=filters,
+        )
+    )
+
+    assert vector_store.last_filters == filters
 
    
