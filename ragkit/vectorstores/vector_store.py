@@ -76,6 +76,7 @@ class VectorStore(ABC):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
+        filters: dict[str, str] | None = None,
     ) -> Iterable[SearchResult]:
         """
         Retrieve the most relevant chunks.
@@ -88,6 +89,9 @@ class VectorStore(ABC):
         top_k
             Maximum number of results to retrieve.
 
+        filters
+            Optional metadata filters used to limit
+            the search results.
         Returns
         -------
         Iterable[SearchResult]
