@@ -134,10 +134,13 @@ class ChromaVectorStore(VectorStore):
         self,
         query_embedding: QueryEmbedding,
         top_k: int = 5,
+        filters: dict[str, str] | None = None,
     ) -> Iterable[SearchResult]:
         """
         Search for chunks similar to the supplied query.
-
+        filters
+            Optional metadata filters applied before
+            similarity search.
         Responsibilities
         ----------------
         - Execute a similarity search in ChromaDB.
@@ -158,6 +161,7 @@ class ChromaVectorStore(VectorStore):
         response = self._collection.query(
             query_embeddings=[query_embedding.vector],
             n_results=top_k,
+            where=filters,
             include=[
                 "documents",
                 "metadatas",
