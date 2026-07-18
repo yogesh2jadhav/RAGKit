@@ -1,5 +1,3 @@
-from ragkit.ragkit import RagKit
+from ragkit.app import RagKit
 
-__all__ = [
-    "RagKit",
-]
+__all__ = ["RagKit"]
