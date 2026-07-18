@@ -1,5 +1,6 @@
 '''
- __future__ lets you use features from newer Python versions before they become the default behavior.
+ __future__ lets you use features from newer Python versions before they
+ become the default behavior.
  It provides easy way to  define class
 '''
 from __future__ import annotations
@@ -11,7 +12,8 @@ from uuid import UUID
 '''
  This Class called Document will hold a chunk of a file.
  frozen=True  - To make this Document object immutable
- slots=Ture - Python stores attributes in a fixed structure instead of a dictionary. This is a performance optimization.
+ slots=Ture - Python stores attributes in a fixed structure instead of a
+ dictionary. This is a performance optimization.
 '''
 @dataclass(frozen=True, slots=True)
 class Document:

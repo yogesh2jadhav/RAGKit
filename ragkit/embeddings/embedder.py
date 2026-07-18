@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """
 Purpose
 -------
@@ -16,6 +14,7 @@ Does NOT
 - Perform similarity search.
 """
 
+from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
@@ -23,8 +22,10 @@ from collections.abc import Iterable
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
+
 '''
-=> Embedder is here is just like java Interface with one empty method some class have to implement this.
+=> Embedder is here is just like java Interface with one empty method some class
+have to implement this.
 '''
 class Embedder(ABC):
 

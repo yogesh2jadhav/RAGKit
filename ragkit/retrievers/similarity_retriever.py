@@ -17,16 +17,15 @@ Does NOT
 """
 
 from __future__ import annotations
-from typing import Any
 
 from collections.abc import Iterable
+from typing import Any
 
 from ragkit.config.retrieval_config import RetrievalConfig
 from ragkit.embeddings.embedder import Embedder
 from ragkit.models.search_result import SearchResult
 from ragkit.retrievers.retriever import Retriever
 from ragkit.vectorstores.vector_store import VectorStore
-
 
 '''
 => This class implement Retriever interface with one method called retrieve.
@@ -75,7 +74,8 @@ class SimilarityRetriever(Retriever):
         #
         # Convert the user's query into an embedding.
         #
-        query_embedding = self._embedder.embed_query( #=> Converting String query into embedding. for Verctor search
+        #=> Converting String query into embedding. for Verctor search
+        query_embedding = self._embedder.embed_query(
             query,
         )
 

@@ -33,7 +33,6 @@ from ragkit.prompts.default_prompt_builder import DefaultPromptBuilder
 from ragkit.retrievers.similarity_retriever import SimilarityRetriever
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
 
-
 EXAMPLES_DIR = Path(__file__).parent
 DATA_DIR = EXAMPLES_DIR / "data"
 VECTOR_DB_DIR = DATA_DIR / "vector_db"

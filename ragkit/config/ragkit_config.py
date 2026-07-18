@@ -15,8 +15,7 @@ Does NOT
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 
 from ragkit.config.chunker_config import ChunkerConfig
 from ragkit.config.embedding_config import EmbeddingConfig

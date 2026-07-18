@@ -24,5 +24,5 @@ class LLMConfig:
     Configuration for an LLM.
     """
 
-    model: str
+    model: str = "qwen3:8b"
     temperature: float = 0.0

@@ -30,7 +30,6 @@ from ragkit.models.document import Document
 from ragkit.transformers.markdown_transformer import MarkdownTransformer
 from ragkit.transformers.whitespace_transformer import WhitespaceTransformer
 
-
 EXAMPLES_DIR = Path(__file__).parent
 DOCS_DIR = EXAMPLES_DIR / "docs"
 

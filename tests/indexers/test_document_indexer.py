@@ -14,11 +14,9 @@ from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.source_document import SourceDocument
 from ragkit.processors import DocumentProcessor
 from ragkit.sources.source import Source
-from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.transformers.transformer import Transformer
-from uuid import uuid4
-from collections.abc import Iterable
-from ragkit.models.chunk import Chunk
+from ragkit.vectorstores.vector_store import VectorStore
+
 
 class FakeSource(Source):
     """

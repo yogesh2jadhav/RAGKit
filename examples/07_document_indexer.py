@@ -32,7 +32,6 @@ from ragkit.sources.local_source import LocalSource
 from ragkit.transformers.identity_transformer import IdentityTransformer
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
 
-
 EXAMPLES_DIR = Path(__file__).parent
 DOCS_DIR = EXAMPLES_DIR / "docs"
 DATA_DIR = EXAMPLES_DIR / "data"

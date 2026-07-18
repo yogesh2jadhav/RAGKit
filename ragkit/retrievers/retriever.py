@@ -22,6 +22,7 @@ from collections.abc import Iterable
 
 from ragkit.models.search_result import SearchResult
 
+
 #=> This is just like interface with one method
 class Retriever(ABC):
     """

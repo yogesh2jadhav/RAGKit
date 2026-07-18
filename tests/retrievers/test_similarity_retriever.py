@@ -10,7 +10,7 @@ from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
 from ragkit.retrievers.similarity_retriever import SimilarityRetriever
 from ragkit.vectorstores.vector_store import VectorStore
-from collections.abc import Iterable
+
 
 class FakeEmbedder(Embedder):
     """

@@ -26,11 +26,13 @@ from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 
+
 class SentenceTransformerEmbedder(Embedder):
 
     def __init__(
         self,
-        model_name: str = "all-MiniLM-L6-v2", # This is model name all-MiniLM-L6-v2 produces 384-dimensional vectors.
+        # This is model name all-MiniLM-L6-v2 produces 384-dimensional vectors.
+        model_name: str = "all-MiniLM-L6-v2",
     ) -> None:
 
         self._model_name = model_name
@@ -43,7 +45,9 @@ class SentenceTransformerEmbedder(Embedder):
 
         chunk_list = list(chunks)  # Create list of chunks
 
-        texts = [ # chunk have other information also from that only take text in "texts" object. But we are collecting only "content"
+        # chunk have other information also from that only take text in "texts"
+        # object. But we are collecting only "content"
+        texts = [
             chunk.content
             for chunk in chunk_list
         ]

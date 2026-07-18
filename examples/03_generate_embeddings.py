@@ -43,6 +43,7 @@ def main() -> None:
     print("=" * 70)
     print("Example 03 - Generate Embeddings")
     print("=" * 70)
+    print(f"Vector DB directory: {VECTOR_DB_DIR}")
 
     docs_directory = DOCS_DIR
 

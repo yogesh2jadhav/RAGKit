@@ -13,10 +13,10 @@ from ragkit.chunkers.character_chunker import CharacterChunker
 from ragkit.embeddings.ollama_embedder import OllamaEmbedder
 from ragkit.indexers.document_indexer import DocumentIndexer
 from ragkit.processors.document_processor import DocumentProcessor
+from ragkit.retrievers.similarity_retriever import SimilarityRetriever
 from ragkit.sources.metadata_local_source import MetadataLocalSource
 from ragkit.transformers.markdown_transformer import MarkdownTransformer
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
-from ragkit.retrievers.similarity_retriever import SimilarityRetriever
 
 EXAMPLES_DIR = Path(__file__).parent
 

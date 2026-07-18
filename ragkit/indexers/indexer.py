@@ -20,6 +20,7 @@ from abc import ABC, abstractmethod
 
 from ragkit.sources.source import Source
 
+
 # => This is just a interface.
 class Indexer(ABC):
     """

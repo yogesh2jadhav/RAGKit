@@ -1,13 +1,14 @@
 from uuid import uuid4
 
 import pytest
+from pytest import raises
+
+from ragkit.exceptions.vector_store_error import VectorStoreError
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
-from pytest import raises
 
-from ragkit.exceptions.vector_store_error import VectorStoreError
 
 def create_chunk(content: str, index: int = 0) -> Chunk:
     """

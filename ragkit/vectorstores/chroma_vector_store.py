@@ -16,21 +16,20 @@ Does NOT
 """
 
 from __future__ import annotations
-from ragkit.exceptions.vector_store_error import VectorStoreError
-
-from ragkit.config.vector_store_config import VectorStoreConfig
 
 from collections.abc import Iterable, Mapping
 from typing import Any
+from uuid import UUID
 
 import chromadb
 
+from ragkit.config.vector_store_config import VectorStoreConfig
+from ragkit.exceptions.vector_store_error import VectorStoreError
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
-from ragkit.vectorstores.vector_store import VectorStore
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
-from uuid import UUID
+from ragkit.vectorstores.vector_store import VectorStore
 
 '''
 => ChromaVectorStore class implement VectorStore Interface and it's 3 methods.
@@ -91,15 +90,20 @@ class ChromaVectorStore(VectorStore):
         embeddings: Iterable[Embedding],
     ) -> None:
         """
-        => embeddings: The source data. It is a collection or stream containing your Embedding objects.
-        for embedding in embeddings: A standard loop that goes through each individual Embedding item one by one.
-        embedding.chunk_id (The Key): This becomes the dictionary key. It is the identifier of the text chunk.
-        embedding (The Value): This becomes the dictionary value. It is the full object itself (containing the vector array and the model metadata).
+        => embeddings: The source data. It is a collection or stream containing
+        your Embedding objects.
+        for embedding in embeddings: A standard loop that goes through each
+        individual Embedding item one by one.
+        embedding.chunk_id (The Key): This becomes the dictionary key. It is
+        the identifier of the text chunk.
+        embedding (The Value): This becomes the dictionary value. It is the
+        full object itself (containing the vector array and the model metadata).
 
         embedding_by_chunk_id(chunk_id, embedding)
         """
         embedding_by_chunk_id = {
-            embedding.chunk_id: embedding for embedding in embeddings #=> embedding_by_chunk_id(chunk_id, embedding)
+            #=> embedding_by_chunk_id(chunk_id, embedding)
+            embedding.chunk_id: embedding for embedding in embeddings
         }
 
         for chunk in chunks:
@@ -156,7 +160,8 @@ class ChromaVectorStore(VectorStore):
             raise ValueError("top_k must be greater than zero.")
 
         '''
-        => Following code will do query on vector DB and will get documents, metadata, and distances as retrun.
+        => Following code will do query on vector DB and will get documents,
+        metadata, and distances as retrun.
         '''
         response = self._collection.query(
             query_embeddings=[query_embedding.vector],
@@ -182,7 +187,8 @@ class ChromaVectorStore(VectorStore):
         #
         assert len(ids) == len(documents) == len(metadatas) == len(distances)
 
-        # => following for loop is just to create chunk object using output of query and return as SearchResult object.
+        # => following for loop is just to create chunk object using output of
+        # query and return as SearchResult object.
         for chunk_id, document, metadata, distance in zip(
             ids,
             documents,

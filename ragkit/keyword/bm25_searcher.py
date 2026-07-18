@@ -22,8 +22,8 @@ import re
 from collections.abc import Iterable
 
 from rank_bm25 import BM25Okapi
-from ragkit.exceptions.keyword_searcher_error import KeywordSearcherError
 
+from ragkit.exceptions.keyword_searcher_error import KeywordSearcherError
 from ragkit.keyword.keyword_searcher import KeywordSearcher
 from ragkit.models.chunk import Chunk
 from ragkit.models.search_result import SearchResult

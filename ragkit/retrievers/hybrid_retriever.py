@@ -19,6 +19,7 @@ Does NOT
 """
 
 from __future__ import annotations
+
 from typing import Any
 
 from ragkit.keyword.keyword_searcher import KeywordSearcher

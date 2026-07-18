@@ -22,9 +22,9 @@ from collections.abc import Iterable
 from uuid import uuid4
 
 from ragkit.chunkers.chunker import Chunker
+from ragkit.config.chunker_config import ChunkerConfig
 from ragkit.models.chunk import Chunk
 from ragkit.models.document import Document
-from ragkit.config.chunker_config import ChunkerConfig
 
 '''
 => CharacterChunker is the class which have implement Chunker interface.
@@ -46,7 +46,7 @@ class CharacterChunker(Chunker):
             chunk_size = config.chunk_size
 
         if config is not None:
-            chunk_overlap = config.chunk_overlap
+            chunk_overlap = config.overlap
 
         self._chunk_size = chunk_size
         self._chunk_overlap = chunk_overlap
@@ -54,7 +54,8 @@ class CharacterChunker(Chunker):
     '''
     => this method will break document into chunk in defined size. 
        This method act like streamer, 
-       it will create one chunk and yield that one chunks (return one chunk) and loop continue for next chunk.
+       it will create one chunk and yield that one chunks (return one chunk) and
+       loop continue for next chunk.
     '''
     def chunk(
         self,

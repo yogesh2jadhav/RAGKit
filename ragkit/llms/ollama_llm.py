@@ -23,10 +23,10 @@ from typing import Any
 
 import ollama
 
+from ragkit.config.llm_config import LLMConfig
 from ragkit.exceptions import LLMError
 from ragkit.llms.llm import LLM
 from ragkit.models.llm_response import LLMResponse
-from ragkit.config.llm_config import LLMConfig
 
 '''
 => OllamaLLM is class which is implement LLM interface. with generate method.
@@ -76,7 +76,9 @@ class OllamaLLM(LLM):
         """
 
         try:
-            response = self._client.generate( # => where we send Prompt (all search output and question to Ollama) and get response
+            # => where we send Prompt (all search output and question to Ollama)
+            # and get response
+            response = self._client.generate(
                 model=self._model_name,
                 prompt=prompt,
                 options=dict(options) if options else None,

@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import pytest
 
+from ragkit.config.vector_store_config import VectorStoreConfig
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
 from ragkit.vectorstores.vector_store import VectorStore
-from ragkit.config.vector_store_config import VectorStoreConfig
+
 
 def test_vector_store_is_abstract():
     """

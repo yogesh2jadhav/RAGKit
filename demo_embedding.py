@@ -5,7 +5,6 @@ from ragkit.embeddings.sentence_transformer_embedder import (
 from ragkit.loaders.loader_factory import LoaderFactory
 from ragkit.sources.local_source import LocalSource
 
-
 source = LocalSource("docs")
 
 factory = LoaderFactory()

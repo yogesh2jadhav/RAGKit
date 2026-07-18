@@ -1,9 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import FrozenInstanceError
-
-import pytest
-
 from ragkit.models.query_embedding import QueryEmbedding
 
 

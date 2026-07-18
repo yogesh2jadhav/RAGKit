@@ -94,9 +94,9 @@ def main() -> None:
     print(f"Embeddings Stored : {result.embeddings}")
     print()
 
-    print(f"Vector Store      : Chroma")
-    print(f"Collection        : ragkit_examples")
-    print(f"Database Path     : ./vector_db")
+    print("Vector Store      : Chroma")
+    print("Collection        : ragkit_examples")
+    print("Database Path     : ./vector_db")
 
     #
     # Verify persistence.

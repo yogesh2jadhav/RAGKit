@@ -19,12 +19,12 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
+from typing import Any
 
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
 from ragkit.models.search_result import SearchResult
-from typing import Any
 
 '''
 => VectorStore is interface with 3 empty methods

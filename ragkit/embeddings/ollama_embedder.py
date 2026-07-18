@@ -17,17 +17,17 @@ Does NOT
 """
 
 from __future__ import annotations
-from ragkit.exceptions.embedding_error import EmbeddingError
 
 from collections.abc import Iterable
 
 from ollama import Client
 
+from ragkit.config.embedding_config import EmbeddingConfig
 from ragkit.embeddings.embedder import Embedder
+from ragkit.exceptions.embedding_error import EmbeddingError
 from ragkit.models.chunk import Chunk
 from ragkit.models.embedding import Embedding
 from ragkit.models.query_embedding import QueryEmbedding
-from ragkit.config.embedding_config import EmbeddingConfig
 
 '''
 => This class have implemnetd Embedder interface.
@@ -66,7 +66,8 @@ class OllamaEmbedder(Embedder):
             host=host,
         )
     '''
-    => This embed take Iterable[Chunk], reason is when we do chunk we are doing stream using yield to support that 
+    => This embed take Iterable[Chunk], reason is when we do chunk we are doing
+    stream using yield to support that 
     we need Iterable[Chunk]. List will not work in this case.
     '''
     def embed(

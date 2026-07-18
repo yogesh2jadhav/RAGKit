@@ -1,8 +1,8 @@
+from ragkit.app import RagKit
 from ragkit.indexers.indexer import Indexer
 from ragkit.models.indexing_result import IndexingResult
 from ragkit.models.llm_response import LLMResponse
 from ragkit.pipelines.pipeline import Pipeline
-from ragkit.app import RagKit
 from ragkit.sources.source import Source
 
 

@@ -1,6 +1,7 @@
 """Example 12 - Hybrid Retrieval"""
 
 from pathlib import Path
+
 from ragkit.chunkers.character_chunker import CharacterChunker
 from ragkit.embeddings.ollama_embedder import OllamaEmbedder
 from ragkit.indexers.document_indexer import DocumentIndexer

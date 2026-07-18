@@ -33,7 +33,6 @@ from ragkit.rerankers.llm_reranker import LLMReranker
 from ragkit.retrievers.similarity_retriever import SimilarityRetriever
 from ragkit.vectorstores.chroma_vector_store import ChromaVectorStore
 
-
 EXAMPLES_DIR = Path(__file__).parent
 DATA_DIR = EXAMPLES_DIR / "data"
 VECTOR_DB_DIR = DATA_DIR / "vector_db"
@@ -125,6 +124,11 @@ def main() -> None:
     identity_results = identity.rerank(
         query=query,
         results=retrieved,
+    )
+
+    print_results(
+        "Identity Reranked Results",
+        identity_results,
     )
 
     #

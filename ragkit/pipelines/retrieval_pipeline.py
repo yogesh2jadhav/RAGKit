@@ -28,7 +28,6 @@ from ragkit.rerankers.identity_reranker import IdentityReranker
 from ragkit.rerankers.reranker import Reranker
 from ragkit.retrievers.retriever import Retriever
 
-
 '''
 => In this end to end execution happen
     query -> Retriever.retrieve() -> _reranker.rerank() -> Prompt -> LLM.generate() -> LLMResponse

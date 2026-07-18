@@ -17,10 +17,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 # => This is just like DTO in java
+
+
 @dataclass(frozen=True, slots=True)
 class EmbeddingConfig:
     """
     Configuration for an embedding model.
     """
 
-    model: str
+    model: str = "nomic-embed-text"

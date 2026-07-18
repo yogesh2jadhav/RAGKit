@@ -23,9 +23,9 @@ from collections.abc import Iterable
 from ragkit.config.reranker_config import RerankerConfig
 from ragkit.llms.llm import LLM
 from ragkit.models.search_result import SearchResult
-from ragkit.rerankers.reranker import Reranker
 from ragkit.rerankers.ranking_parser import RankingParser
 from ragkit.rerankers.ranking_prompt_builder import RankingPromptBuilder
+from ragkit.rerankers.reranker import Reranker
 
 
 class LLMReranker(Reranker):

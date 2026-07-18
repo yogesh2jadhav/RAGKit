@@ -23,7 +23,8 @@ class TextLoader(Loader):
     @classmethod
     def supports(cls, source: SourceDocument) -> bool:
         """
-        => Returns True if the source document is supported. Based on input Source Document (source_document.py)
+        => Returns True if the source document is supported. Based on input
+        Source Document (source_document.py)
         """
         extension = Path(source.uri).suffix.lower()
         return extension in cls._SUPPORTED_EXTENSIONS
